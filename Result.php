@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,10 +22,11 @@
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
-   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js" integrity="sha256-vyehT44mCOPZg7SbqfOZ0HNYXjPKgBCaqxBkW3lh6bg=" crossorigin="anonymous"></script>
-   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js" integrity="sha256-N4u5BjTLNwmGul6RgLoESPNqDFVUibVuOYhP4gJgrew=" crossorigin="anonymous"></script>
-   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js" integrity="sha256-t3+U9BqykoMN9cqZmJ5Z53TvPv4V7S9AmjUcIWNNyxo=" crossorigin="anonymous"></script>
-   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" integrity="sha256-c0m8xzX5oOBawsnLVpHnU2ieISOvxi584aNElFl2W6M=" crossorigin="anonymous"></script>
+
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
 	<script language="JavaScript">
 		function Aba(pAba) {
@@ -55,13 +57,12 @@
 				document.getElementById("tdAba2").className = "abaOn";
 			}
 		}
-	</script>
-		
+	</script>		
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 	
-<!-- Navigation -->
+<!-- Menu Superior -->
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 <div class="container">
 	<div class="navbar-header">
@@ -90,12 +91,10 @@
 	</div>
 	<!-- /.navbar-collapse -->
 </div>
-<!-- /.container -->
 </nav>
 
-<!-- Intro Header -->
+<!-- Cabeçalho do Site -->
 <header class="intro2">
-	
 	<div class="intro2-body">
 		<div class="container">
 			<div class="row">
@@ -111,9 +110,8 @@
 	</div>
 </header>
 
-<!-- About Section -->
-<section id="about">
-
+<!-- Funções PHP Principais --!>
+<!-- Criação da Função Q(t) -->
 <?php
 	// diretório onde encontra-se o arquivo
 	$filename = "FlowRateFunction.php";
@@ -130,202 +128,359 @@
 	$file = @fopen($filename, "w+");
 	@fwrite($file, $s);
 	@fclose($file);
-	
 ?>
 
-<div class="container text-center">
-	<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
-				
-		<h3><br> <br> <br> Results <br></h3>
+<!-- Calculos -->
+<?php
+	//Trazendo variaveis de Forms para o cálculo
+	$Hb = ($_POST["Hb"]);
+	$t = 365*$_POST["t"]/100;
+	$pHidrMax = ($_POST["pHidrMax"])/100;
+	$hCheiaMax = ($_POST["hCheiaMax"]);
+	$ng = ($_POST["ng"])/100;
+	$nTrafo = ($_POST["nTrafo"])/100;
+	$pDiv = ($_POST["pDiv"])/100;
+	$Qn = ($_POST["Qn"]);
+	$Qr = ($_POST["Qr"]);
+	$length = floor(100/$_POST["t"])+1;
+	$timePercent = array($length);
+	$time = array($length);
+	$timePercent[0] = 0;
+	$time[0] = 0;
+	for ($i=1; $i<($length); $i++){
+		$time[$i] = $time[$i-1]+$t;
+		$timePercent[$i] = $timePercent[$i-1]+$_POST["t"];
+	}
 
-		<?php
-			
-			//Trazendo variaveis de Forms para o cálculo
-			$Hb = ($_POST["Hb"]);
-			$t = $_POST["t"];
-			$pHidrMax = ($_POST["pHidrMax"])/100;
-			$hCheiaMax = ($_POST["hCheiaMax"]);
-			$ng = ($_POST["ng"])/100;
-			$nTrafo = ($_POST["nTrafo"])/100;
-			$pDiv = ($_POST["pDiv"])/100;
-			$Qn = ($_POST["Qn"]);
-			$Qr = ($_POST["Qr"]);
-			$length = floor(365/($_POST["t"]));
-			$time = array($length);
-			$time[0] = 0;
-			for ($i=1; $i<($length); $i++){
-				$time[$i] = $time[$i-1]+$t;
-			}
+	//Selecionando variáveis com base no tipo de Turbina
+	switch ($_POST["TypeTurbine"]) {
+		case 'Helix':
+			$alpha = 1.25;
+			$beta = 1; 
+			$qui = 1.13;
+			$delta = 0.905;
+			break;
+
+		case 'Kaplan':
+			$alpha = 3.5;
+			$beta = 1.333; 
+			$qui = 6;
+			$delta = 0.905;
+			break;
 		
-			//Selecionando variáveis com base no tipo de Turbina
-			switch ($_POST["TypeTurbine"]) {
-				case 'Helix':
-					$alpha = 1.25;
-					$beta = 1; 
-					$qui = 1.13;
-					$delta = 0.905;
-					break;
+		case 'Francis':
+			$alpha = 1;
+			$beta = 1; 
+			$qui = 1;
+			$delta = 1;
+			break;
 
-				case 'Kaplan':
-					$alpha = 3.5;
-					$beta = 1.333; 
-					$qui = 6;
-					$delta = 0.905;
-					break;
-				
-				case 'Francis':
-					$alpha = 1;
-					$beta = 1; 
-					$qui = 1;
-					$delta = 1;
-					break;
+		default:
+			$alpha = 1;
+			$beta = 1; 
+			$qui = 1;
+			$delta = 1;
+			break;
+	}
 
-				default:
-					$alpha = 1;
-					$beta = 1; 
-					$qui = 1;
-					$delta = 1;
-					break;
-			}
-			
-			//Função de Calculo do Caldal em função do tempo
-			include 'FlowRateFunction.php';
-		
-			$hHidr = array($length);
-			$hCheia = array($length);
-			$P = array($length);
-			$Qdisponivel = array($length);
-			$Qusado = array($length);
-			$E = array($length);
-			$Etotal = 0;
-		
-			for ($i=0; $i<($length); $i++){
-				$Qi = FlowRateFunction($time[$i]);
-				$Qdisponivel[$i] =  max($Qi-$Qr, 0);
-				$Qusado[$i] =  min($Qdisponivel[$i], $Qn);
-				$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
-				$Qrevised = max($Qi-$Qn,0);
-				$hCheia[$i] = $hCheiaMax*pow($Qrevised/($Qi[0]-$Qn),2);
-				$nt = max(1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui)*$delta,0);
-				$P[$i] = 9810*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv)/(1000);
-				if($i > 0){
-					$E[$i] = ($P[$i-1]+P[i])/2*5/100*8760*(1-4/100);
-				}
-				$Etotal += $E[$i];
+	//Função de Calculo do Caldal em função do tempo
+	include 'FlowRateFunction.php';
 
-				echo "->".$time[$i]."<br>";
-			}
-			
+	$hHidr = array($length);
+	$hCheia = array($length);
+	$P = array($length);
+	$Qdisponivel = array($length);
+	$Qusado = array($length);
+	$E = array($length);
+	$Qi[$i] = array($length);
+	$Etotal = 0;
 
-		?>
-		<div class="col-lg-11 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6" style="visibility: visible;">
-			<table>
-			<tr>
-				<td id="tdAba0" class="abaOn" onClick="Aba(0)" title="LossHeight">
-				<button Name="SubmitA"  class="btn btn-primary">Loss Heightt</button>
-				</td>
-				<td id="tdAba1" class="abaOff" onClick="Aba(1)" title="FlowDurationCurve"><button Name="SubmitB"  class="btn btn-primary">Flow Duration Curve</button>
-				</td>
-				<td id="tdAba2" class="abaOff" onClick="Aba(2)" title="ElectricPowerAvailable"><button Name="SubmitC"  class="btn btn-primary">Electric Power Available</button>
-				</td>
-				<td id="tdAba2" class="abaOff" onClick="Aba(2)" title="ProductivePower"><button Name="SubmitA"  class="btn btn-primary">Productive Power</button>
-				</td>
-				<td  class="abaNulo">&nbsp;
-				</td>
-			</tr>
-			</table>
-		</div>
-		<div class="col-lg-11 col-lg-offset-2 col-md-13 col-md-offset-5 col-md-6" id="Aba0" style=" visibility: hidden;">
-			<table>
-				<tr>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Nome:</td>
-					<td><input type="text" name="" size="30"></td>
-				</tr>
-				<tr>
-					<td>Endereço:</td>
-					<td><input type="text" name="" size="30"></td>
-				</tr>
-			</table>
-		</div>
+	for ($i=0; $i<($length); $i++){
+		$Qi[$i] = FlowRateFunction($time[$i]);
+		$Qdisponivel[$i] =  max($Qi[$i]-$Qr, 0);
+		$Qusado[$i] =  min($Qdisponivel[$i], $Qn);
+		$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
+		$Qrevised = max($Qi[$i]-$Qn,0);
+		$hCheia[$i] = $hCheiaMax*pow($Qrevised/($Qi[0]-$Qn),2);
+		$nt = max(1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui)*$delta,0);
+		$P[$i] = 9810*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv)/(1000);
+		if($i > 0){
+			$E[$i] = ($P[$i-1]+P[i])/2*5/100*8760*(1-4/100);
+		}
+		$Etotal += $E[$i];
+	}
+?>
 
-		<div class="col-lg-11 col-lg-offset-2 col-md-13 col-md-offset-5 col-md-6" id="Aba1" style=" visibility: hidden; position:absolute; top:640;">
-			<table>
-				<tr>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Tipo:</td>
-					<td><input type="checkbox" name=""></td>
-				</tr>
-				<tr>
-					<td>Endereço:</td>
-					<td><input type="text" name="" size="30"></td>
-				</tr>
-			</table>
+<!-- Seção do Conteúdo -->
+<section id="about">
+	<div class="container text-center">
+		<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
+			<h3><br> <br> <br> Results <br></h3>
 		</div>
-		<div id="Aba2" style="height: 480px; width: 700px; left: 10px; top: 100px; visibility: hidden; position:absolute;">
-			<table width="100%" border="0">
-				<tr>
-					<td>&nbsp;</td>
-					</tr>
-				<tr>
-					<td>Código:</td>
-					<td><input type="text" name="" size="30"></td>
-				</tr>
-				<tr>
-					<td>Descrição:</td>
-					<td><input type="text" name="" size="30"></td>
-				</tr>
-			</table>
+		<br> <br><br>
+		<div class="container text-center">
+			</canvas><canvas id="FlowDurationCurveDuringTheYear"></canvas>
+			<script type="text/javascript">
+				var ctx = document.getElementById('FlowDurationCurveDuringTheYear').getContext('2d');
+				new Chart(document.getElementById("FlowDurationCurveDuringTheYear"),{
+					type: 'line',
+					data: {
+						labels: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$timePercent[$i].", ";
+							} ?>],
+						datasets: [{ 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$Qi[$i].", ";
+							} ?>],
+							label: "Flow Duration",
+							borderColor: "#3e95cd",
+							fill: false
+						}, { 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$Qdisponivel[$i].", ";
+							} ?>],
+							label: "Available Flow Rate",
+							borderColor: "#8e5ea2",
+							fill: false
+						}, { 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$Qusado[$i].", ";
+							} ?>],
+							label: "Used Flow Rate",
+							borderColor: "#3cba9f",
+							fill: false
+						}]
+					},
+					options: {
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Flow Duration Curve During the Year'
+						},
+						scales: {
+	                    xAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Percent of Years (%)'
+	                        }
+	                    }],
+	                    yAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'm³/s'
+	                        }
+	                    }]
+	                	}
+					}
+				});
+			</script>
 		</div>
-		<br>
-		<canvas id="myChart" width="400" height="400"></canvas>
-<script>
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [{
-            //label: '# of Votes',
-            data: [{
-            	x:0,
-            	y:1
-            }, {
-            	x:1,
-            	y:2
-            }, {x:2,
-            	y:3
-            }, {x:3,
-            	y:4
-            }, {x:4,
-            	y:5
-            }, {x:5,
-            	y:6
-            }],
-        }]
-    },
-    
-});
-</script>
+		<br> <br><br>
+		<div class="container text-center">
+			</canvas><canvas id="Loss Heights"></canvas>
+			<script type="text/javascript">
+				var ctx = document.getElementById('Loss Heights').getContext('2d');
+				new Chart(document.getElementById("Loss Heights"),{
+					type: 'line',
+					data: {
+						labels: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$timePercent[$i].", ";
+							} ?>],
+						datasets: [{ 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$hHidr[$i].", ";
+							} ?>],
+							label: "Hydraulic Losses",
+							borderColor: "#3e95cd",
+							fill: false
+						}, { 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$hCheia[$i].", ";
+							} ?>],
+							label: "Full Flow Losses",
+							borderColor: "#8e5ea2",
+							fill: false
+						}]
+					},
+					options: {
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Loss Heights'
+						},
+						scales: {
+	                    xAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Percent of Years (%)'
+	                        }
+	                    }],
+	                    yAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Altitude (m)'
+	                        }
+	                    }]
+	                	}
+					}
+				});
+			</script>
 		</div>
+		<br> <br><br>
+		<div class="container text-center">
+			</canvas><canvas id="AvailableElectricPower"></canvas>
+			<script type="text/javascript">
+				var ctx = document.getElementById('AvailableElectricPower').getContext('2d');
+				new Chart(document.getElementById("AvailableElectricPower"),{
+					type: 'line',
+					data: {
+						labels: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$timePercent[$i].", ";
+							} ?>],
+						datasets: [{ 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$P[$i].", ";
+							} ?>],
+							label: "Available Power",
+							borderColor: "#3e95cd",
+							fill: false
+						}, { 
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$Qusado[$i].", ";
+							} ?>],
+							label: "Used Flow",
+							borderColor: "#8e5ea2",
+							fill: false
+						}]
+					},
+					options: {
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Available Electric Power'
+						},
+						scales: {
+	                    xAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Percent of Years (%)'
+	                        }
+	                    }],
+	                    yAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Power (kW)'
+	                        }
+	                    }]
+	                	}
+					}
+				});
+			</script>
+		</div>
+		<br> <br><br>
+		<div class="container text-center">
+			</canvas><canvas id="AvailableElectricPower"></canvas>
+			<script type="text/javascript">
+				var ctx = document.getElementById('AvailableElectricPower').getContext('2d');
+				new Chart(document.getElementById("AvailableElectricPower"),{
+					type: 'line',
+					data: {
+						labels: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$timePercent[$i].", ";
+							} ?>],
+
+						datasets: [{ 
+							label: "Available Power",
+							borderColor: "#3e95cd",
+							fill: false,
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$P[$i].", ";
+							} ?>], 
+							yAxisID: "y-axis-1",
+        					},{ 
+        					label: "Used Flow Rate",
+							borderColor: "#8e5ea2",
+							fill: false,	
+							data: [<?php 
+							for ($i=0; $i<($length); $i++){
+								echo "".$Qusado[$i].", ";
+							} ?>],
+							yAxisID: "y-axis-2"
+							
+						}]
+					},
+					options: {
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Available Electric Power'
+						},
+						scales: {
+	                    xAxes: [{
+	                        display: true,
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Percent of Years (%)'
+	                        }
+	                    }],
+	                    yAxes: [{
+	                    	type: "linear",
+	                        display: true,
+	                        position: "left",
+	                        id: "y-axis-1",
+	                        scaleLabel: {
+	                            display: true,
+	                            labelString: 'Power (kW)'
+	                        }
+	                    },{
+	                    	gridLines: {drawOnChartArea: false,},	
+	                    	type: "linear",
+							display: true,
+							position: "right",
+							id: "y-axis-2",
+							scaleLabel: {
+								display: true,
+								labelString: 'm^3/s'
+							}
+
+	                    }]
+	                	}
+					}
+				});
+			</script>
+		</div>
+		<br> <br> <br>
 	</div>
-		<h2><br> <br> <br></h2>
-</div>
-
 </section>
 
-<!-- Footer -->
+<!-- Rodapé -->
 <footer>
-<div class="container text-center">
-	<p class="credits">
-		Copyright &copy; Callebe SB<br/>
-	</p>
-</div>
+	<div class="container text-center">
+		<p class="credits">
+			Copyright &copy; Callebe SB<br/>
+		</p>
+	</div>
 </footer>
+
+<!-- Includes -->
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
 <!-- Bootstrap Core JavaScript -->
@@ -334,5 +489,6 @@ var myChart = new Chart(ctx, {
 <script src="js/jquery.easing.min.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="js/theme.js"></script>
+
 </body>
 </html>

@@ -122,7 +122,7 @@
 						<th align="rigth"><input class="form-control" type="number" class="form-control" name="Hb"  placeholder="Hb" min="0" max="5000" step=0.001></th> 
 					</tr>
 					<tr>
-						<th align="left">Time Interval (Days) : </th>
+						<th align="left">Time Interval (% of Years) : </th>
 						<th align="rigth"><input type="number" class="form-control" class="form-control" name="t" placeholder="t" min="1" max="365" step=0.001></th> 
 					</tr>
 					<tr>
@@ -165,7 +165,8 @@
 								<option value="Helix">Helix</option>
 								<option value="Kaplan">Kaplan</option>
 								<option value="Francis">Francis</option>
-								<option value="Pelton">Pelton</option>
+								<option value="Pelton1">Pelton (1 Ozzle)</option>
+								<option value="Pelton2">Pelton (2 Ozzle)</option>
 							</select>
 						</th>
 					</tr>
