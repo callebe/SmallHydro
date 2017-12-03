@@ -20,11 +20,43 @@
 	<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->	
+		<![endif]-->
+   	
+	<script language="JavaScript">
+		function Aba(pAba) {
+			if (pAba == 0) {
+				document.getElementById("Aba0").style.visibility = "visible";
+				document.getElementById("Aba1").style.visibility = "hidden";
+				document.getElementById("Aba2").style.visibility = "hidden";
+				document.getElementById("TdAba0").className = "abaOn";
+				document.getElementById("TdAba1").className = "abaOff";
+				document.getElementById("TdAba2").className = "abaOff";
+			}
+			else 
+			if (pAba == 1) {
+				document.getElementById("Aba0").style.visibility = "hidden";
+				document.getElementById("Aba1").style.visibility = "visible";
+				document.getElementById("Aba2").style.visibility = "hidden";
+				document.getElementById("TdAba0").className = "abaOff";
+				document.getElementById("TdAba1").className = "abaOn";
+				document.getElementById("TdAba2").className = "abaOff";
+			}
+			else
+			if (pAba == 2) {
+				document.getElementById("Aba0").style.visibility = "hidden";
+				document.getElementById("Aba1").style.visibility = "hidden";
+				document.getElementById("Aba2").style.visibility = "visible";
+				document.getElementById("TdAba0").className = "abaOff";
+				document.getElementById("TdAba1").className = "abaOff";
+				document.getElementById("TdAba2").className = "abaOn";
+			}
+		}
+	</script>
+		
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-
+	
 <!-- Navigation -->
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 <div class="container">
@@ -42,7 +74,7 @@
 			<a href="index.html">Home</a>
 			</li>
 			<li>
-			<a href="ProjectNow.html">Project Now</a>
+			<a href="ProjectNow.php">Project Now</a>
 			</li>
 			<li>
 			<a href="InvolvedTheory.html">Involved Theory</a>
@@ -78,76 +110,77 @@
 <!-- About Section -->
 <section id="about">
 <div class="container text-center">
-	<div class="container text-center">
+	<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
+				
 		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br></h3>
-		<form>
-			<div class="col-lg-11 col-lg-offset-2 col-md-13 col-md-offset-5">
+
+		<form action="Result.php" method="post" id="Entrada" class="form-horizontal">
+			<div class="col-lg-11 col-lg-offset-2 col-md-13 col-md-offset-5 col-md-6">
 				<table style="width:70%">
 					<tr>
 						<th align="left">Gross head (Meters): </th>
-						<th align="rigth"><input type="number" class="form-control" id="Hb" placeholder="Hb" min="1" max="5000"></th> 
+						<th align="rigth"><input class="form-control" type="number" class="form-control" name="Hb"  placeholder="Hb" min="0" max="5000" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Time Interval (Days) : </th>
-						<th align="rigth"><input type="number" class="form-control" id="t" placeholder="t" min="1" max="365"></th> 
+						<th align="rigth"><input type="number" class="form-control" class="form-control" name="t" placeholder="t" min="1" max="365" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">The Flow Rate Function (In t Terms): </th>
-						<th align="rigth"><input type="text" class="form-control" id="Qt" placeholder="Q(t)" size=10></th> 
+						<th align="rigth"><input type="text" class="form-control" name="Qt"  placeholder="Q(t)" size=10></th> 
 					</tr>
 					<tr>
 						<th align="left">The Maximum Load Losses Value (%): </th>
-						<th align="rigth"><input type="number" class="form-control" id="pHidrMax" placeholder="pHidrMax" min="0" max="100"></th> 
+						<th align="rigth"><input type="number" class="form-control"  name="pHidrMax" placeholder="pHidrMax" min="0" max="100" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Maximum Decrease in Gross Head due to Full Flow (Meters): </th>
-						<th align="right"><input type="number" class="form-control" id="hCheiaMax" placeholder="hCheiaMax" min="0" max="5000"></th> 
+						<th align="right"><input type="number" name="hCheiaMax" class="form-control"  name="hCheiaMax" placeholder="hCheiaMax" min="0" max="5000" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Generator Efficienc (%): </th>
-						<th align="rigth"><input type="number" class="form-control" id="ng" placeholder="ng" min="0" max="100"></th> 
+						<th align="rigth"><input type="number" name="ng" class="form-control"  placeholder="ng" min="0" max="100" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Transformer Efficienc (%): </th>
-						<th align="rigth"><input type="number" class="form-control" id="nTrafo" placeholder="nTrafo" min="0" max="100"></th> 
+						<th align="rigth"><input type="number" name="nTrafo" class="form-control"  placeholder="nTrafo" min="0" max="100" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Other Electric Losses (%): </th>
-						<th align="rigth"><input type="number" class="form-control" id="pDiv" placeholder="pDiv" min="0" max="100"></th> 
+						<th align="rigth"><input type="number" name="pDiv" class="form-control"  placeholder="pDiv" min="0" max="100" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Nominal Flow Rate (meters): </th>
-						<th align="rigth"><input type="number" class="form-control" id="Qn" placeholder="Qn" min="0" max="100"></th> 
+						<th align="rigth"><input type="number" name="Qn" class="form-control"  placeholder="Qn" min="0" max="100" step=0.001></th> 
 					</tr>
 					<tr>
 						<th align="left">Compensation Flow (meters): </th>
-						<th align="rigth"><input type="number" class="form-control" id="Qr" placeholder="Qr" min="0" max="100"></th> 
+						<th align="rigth"><input type="number" name="Qr" class="form-control"  placeholder="Qr" min="0" max="100" step=0.001></th> 
 					</tr>
 				</table>
 				<table style="width:70%">
 					<tr>
 						<th align="left">Type of Turbine: </th>
-						<th align="rigth"><select class="form-control" id="typeOfTurbine">
-								<option>Helix</option>
-								<option>Kaplan</option>
-								<option>Francis</option>
-								<option>Pelton</option>
+						<th align="rigth"><select class="form-control" name="TypeTurbine">
+								<option value="Helix">Helix</option>
+								<option value="Kaplan">Kaplan</option>
+								<option value="Francis">Francis</option>
+								<option value="Pelton">Pelton</option>
 							</select>
 						</th>
 					</tr>
 				</table>
 				<br> <br> <br>
 			</div>
+			<button type="submit" Name="Submit"  class="btn btn-primary">Project</button>
 		</form>
-		
-		<button id="Begin" type="submit" class="btn btn-primary">Project</button>
-		
+		<br>
 	</div>
-	<h2><br> <br> <br></h2>
+		<h2><br> <br> <br></h2>
 </div>
 
-</section>
 
+</section>
 <!-- Footer -->
 <footer>
 <div class="container text-center">
