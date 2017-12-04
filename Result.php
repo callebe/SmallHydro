@@ -16,84 +16,46 @@
 	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic,700italic" rel="stylesheet" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
-
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-
-	<script language="JavaScript">
-		function Aba(pAba) {
-			if (pAba == 0) {
-				document.getElementById("Aba0").style.visibility = "visible";
-				document.getElementById("Aba1").style.visibility = "hidden";
-				document.getElementById("Aba2").style.visibility = "hidden";
-				document.getElementById("tdAba0").className = "abaOn";
-				document.getElementById("tdAba1").className = "abaOff";
-				document.getElementById("tdAba2").className = "abaOff";
-			}
-			else 
-			if (pAba == 1) {
-				document.getElementById("Aba0").style.visibility = "hidden";
-				document.getElementById("Aba1").style.visibility = "visible";
-				document.getElementById("Aba2").style.visibility = "hidden";
-				document.getElementById("tdAba0").className = "abaOff";
-				document.getElementById("tdAba1").className = "abaOn";
-				document.getElementById("tdAba2").className = "abaOff";
-			}
-			else
-			if (pAba == 2) {
-				document.getElementById("Aba0").style.visibility = "hidden";
-				document.getElementById("Aba1").style.visibility = "hidden";
-				document.getElementById("Aba2").style.visibility = "visible";
-				document.getElementById("tdAba0").className = "abaOff";
-				document.getElementById("tdAba1").className = "abaOff";
-				document.getElementById("tdAba2").className = "abaOn";
-			}
-		}
-	</script>		
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 	
 <!-- Menu Superior -->
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-<div class="container">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-		<i class="fa fa-bars"></i>
-		</button>
-		<a class="navbar-brand page-scroll" href="index.html">
-		Project Your Small Hydro </a>
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+			<i class="fa fa-bars"></i>
+			</button>
+			<a class="navbar-brand page-scroll" href="index.html">
+			Project Your Small Hydro </a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+			<ul class="nav navbar-nav">
+				<li>
+				<a href="index.html">Home</a>
+				</li>
+				<li>
+				<a href="ProjectNow.php">Project Now</a>
+				</li>
+				<li>
+				<a href="InvolvedTheory.html">Involved Theory</a>
+				</li>
+				<li>
+				<a href="Contact.html">Contact</a>
+				</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
 	</div>
-	<!-- Collect the nav links, forms, and other content for toggling -->
-	<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-		<ul class="nav navbar-nav">
-			<li>
-			<a href="index.html">Home</a>
-			</li>
-			<li>
-			<a href="ProjectNow.php">Project Now</a>
-			</li>
-			<li>
-			<a href="InvolvedTheory.html">Involved Theory</a>
-			</li>
-			<li>
-			<a href="Contact.html">Contact</a>
-			</li>
-		</ul>
-	</div>
-	<!-- /.navbar-collapse -->
-</div>
 </nav>
 
-<!-- Cabeçalho do Site -->
+<!-- Cabeçalho -->
 <header class="intro2">
 	<div class="intro2-body">
 		<div class="container">
@@ -132,6 +94,7 @@
 
 <!-- Calculos -->
 <?php
+	
 	//Trazendo variaveis de Forms para o cálculo
 	$Hb = ($_POST["Hb"]);
 	$t = 365*$_POST["t"]/100;
@@ -169,10 +132,22 @@
 			break;
 		
 		case 'Francis':
-			$alpha = 1;
-			$beta = 1; 
-			$qui = 1;
-			$delta = 1;
+			$alpha = 1.25;
+			$beta = 0.919; 			
+			break;
+
+		case 'Pelton1':
+			$alpha = 1.31+0.25*1;
+			$beta = pow(0.662+0.001*1,-1); 
+			$qui = 5.6+0.4*1;
+			$delta = 0.864;
+			break;
+
+		case 'Pelton2':
+			$alpha = 1.31+0.25*2;
+			$beta = pow(0.662+0.001*2,-1); 
+			$qui = 5.6+0.4*2;
+			$delta = 0.864;
 			break;
 
 		default:
@@ -191,8 +166,7 @@
 	$P = array($length);
 	$Qdisponivel = array($length);
 	$Qusado = array($length);
-	$E = array($length);
-	$Qi[$i] = array($length);
+	$Qi = array($length);
 	$Etotal = 0;
 
 	for ($i=0; $i<($length); $i++){
@@ -202,13 +176,26 @@
 		$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
 		$Qrevised = max($Qi[$i]-$Qn,0);
 		$hCheia[$i] = $hCheiaMax*pow($Qrevised/($Qi[0]-$Qn),2);
+		if ($_POST["TypeTurbine"]=='Francis'){
+			$beta = 1.1173*pow($Hb-$hHidr[$i],0.025);
+  			$qui = 3.94-11.7*pow($Hb-$hHidr[$i],-0.5);
+        }
 		$nt = max(1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui)*$delta,0);
 		$P[$i] = 9810*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv)/(1000);
 		if($i > 0){
-			$E[$i] = ($P[$i-1]+P[i])/2*5/100*8760*(1-4/100);
+			$Etotal += ($P[$i-1]+P[i])/2*5/100*8760*(1-4/100);
 		}
-		$Etotal += $E[$i];
 	}
+	if ($_POST["TypeTurbine"]=='Francis'){
+	 	$QdisponivelN =  max($Qn-$Qr, 0);
+	 	$QusadoN =  min($QdisponivelN, $Qn);
+	 	$hHidrN = $Hb*$pHidrMax*pow($QusadoN/$Qn,2);
+		$beta = 1.1173*pow($Hb-$hHidrN,0.025);
+ 		$qui = 3.94-11.7*pow($Hb-$hHidrN,-0.5);
+    }
+	$ntN = max(1-$alpha*pow(abs(1-$beta),$qui)*$delta,0);
+	$hHidrN = $Hb*$pHidrMax;
+	$Pn = 9810/1000*$Qn*($Hb-$hHidrN)*$ntN*$ng*$nTrafo*(1-$pDiv);
 ?>
 
 <!-- Seção do Conteúdo -->
@@ -217,7 +204,29 @@
 		<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
 			<h3><br> <br> <br> Results <br></h3>
 		</div>
-		<br> <br><br>
+		<br><br><br>
+		<table style="width:30%" align="center" class="table">
+			<tbody>
+				<tr>
+					<th align="left">Total Year Energy: </th>
+					<th align="rigth"><?php 
+						if($Etotal<1000){
+							echo "".number_format($Etotal, 3)." kWh";
+						}
+						else{
+							echo "".number_format($Etotal/1000, 3)." MWh";
+						} ?>		
+					</th>
+				</tr>
+				<tr>
+					<th align="left">Nominal Power:</th>
+					<th align="rigth"><?php echo "".number_format($Pn, 3)." kWh"; ?></th>
+				</tr>
+			<tbody>
+		</table>
+		<br><br><br>
+		<h3><br> <br> <br> Graphics <br></h3>
+		<br><br><br>
 		<div class="container text-center">
 			</canvas><canvas id="FlowDurationCurveDuringTheYear"></canvas>
 			<script type="text/javascript">
@@ -281,7 +290,7 @@
 				});
 			</script>
 		</div>
-		<br> <br><br>
+		<br><br><br>
 		<div class="container text-center">
 			</canvas><canvas id="Loss Heights"></canvas>
 			<script type="text/javascript">
@@ -337,7 +346,7 @@
 				});
 			</script>
 		</div>
-		<br> <br><br>
+		<br><br><br>
 		<div class="container text-center">
 			</canvas><canvas id="AvailableElectricPower"></canvas>
 			<script type="text/javascript">
@@ -475,7 +484,7 @@
 <footer>
 	<div class="container text-center">
 		<p class="credits">
-			Copyright &copy; Callebe SB<br/>
+			Copyright &copy; S. B.<br/>
 		</p>
 	</div>
 </footer>
