@@ -59,6 +59,10 @@
 			document.getElementById('Qi[20]').value = "0.649";
 		}
 	</script>
+	<script>
+		window.location.href='#ancora';
+	</script>
+	
 
 </head>
 
@@ -117,9 +121,10 @@
 <!-- Conteúdo -->
 <section id="about">
 	<div class="container text-center">
-		
-		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
+		<a href="#" id="ancora"></a>
 
+		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
+		
 		<?php
 			session_start(); # Deve ser a primeira linha do arquivo
 

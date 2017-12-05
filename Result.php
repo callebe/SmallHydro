@@ -20,6 +20,9 @@
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+   	<script>
+		window.location.href='#ancora';
+	</script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -244,256 +247,201 @@
 			<tbody>
 		</table>
 		<br><br><br>
-		<h3><br> <br> <br> Graphics <br></h3>
+		<h3><a href="#" id="ancora"></a><br><br> <br> Graphics </h3>
+		<br>
+		<table style="width:80%" align="center" class="table">
+			<tbody>
+				<tr>
+					<th align="left">
+						</canvas><canvas id="FlowDurationCurveDuringTheYear"></canvas>
+						<script type="text/javascript">
+							var ctx = document.getElementById('FlowDurationCurveDuringTheYear').getContext('2d');
+							new Chart(document.getElementById("FlowDurationCurveDuringTheYear"),{
+								type: 'line',
+								data: {
+									labels: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$timePercent[$i].", ";
+										} ?>],
+									datasets: [{ 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$Qi[$i].", ";
+										} ?>],
+										label: "Flow Duration",
+										borderColor: "#3e95cd",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$Qdisponivel[$i].", ";
+										} ?>],
+										label: "Available Flow Rate",
+										borderColor: "#8e5ea2",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$Qusado[$i].", ";
+										} ?>],
+										label: "Used Flow Rate",
+										borderColor: "#3cba9f",
+										fill: false
+									}]
+								},
+								options: {
+									responsive: true,
+									title: {
+										display: true,
+										text: 'Flow Duration Curve During the Year'
+									},
+									scales: {
+				                    xAxes: [{
+				                        display: true,
+				                        scaleLabel: {
+				                            display: true,
+				                            labelString: 'Percent of Years (%)'
+				                        }
+				                    }],
+				                    yAxes: [{
+				                        display: true,
+				                        scaleLabel: {
+				                            display: true,
+				                            labelString: 'm³/s'
+				                        }
+				                    }]
+				                	}
+								}
+							});
+						</script>
+					</th>
+				</tr>
+			<tbody>
+		</table>
 		<br><br><br>
-		<div class="container text-center">
-			</canvas><canvas id="FlowDurationCurveDuringTheYear"></canvas>
-			<script type="text/javascript">
-				var ctx = document.getElementById('FlowDurationCurveDuringTheYear').getContext('2d');
-				new Chart(document.getElementById("FlowDurationCurveDuringTheYear"),{
-					type: 'line',
-					data: {
-						labels: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$timePercent[$i].", ";
-							} ?>],
-						datasets: [{ 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$Qi[$i].", ";
-							} ?>],
-							label: "Flow Duration",
-							borderColor: "#3e95cd",
-							fill: false
-						}, { 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$Qdisponivel[$i].", ";
-							} ?>],
-							label: "Available Flow Rate",
-							borderColor: "#8e5ea2",
-							fill: false
-						}, { 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$Qusado[$i].", ";
-							} ?>],
-							label: "Used Flow Rate",
-							borderColor: "#3cba9f",
-							fill: false
-						}]
-					},
-					options: {
-						responsive: true,
-						title: {
-							display: true,
-							text: 'Flow Duration Curve During the Year'
-						},
-						scales: {
-	                    xAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Percent of Years (%)'
-	                        }
-	                    }],
-	                    yAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'm³/s'
-	                        }
-	                    }]
-	                	}
-					}
-				});
-			</script>
-		</div>
+		<table style="width:80%" align="center" class="table">
+			<tbody>
+				<tr>
+					<th align="left">
+						</canvas><canvas id="Loss Heights"></canvas>
+						<script type="text/javascript">
+							var ctx = document.getElementById('Loss Heights').getContext('2d');
+							new Chart(document.getElementById("Loss Heights"),{
+								type: 'line',
+								data: {
+									labels: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$timePercent[$i].", ";
+										} ?>],
+									datasets: [{ 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$hHidr[$i].", ";
+										} ?>],
+										label: "Hydraulic Losses",
+										borderColor: "#3e95cd",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$hCheia[$i].", ";
+										} ?>],
+										label: "Full Flow Losses",
+										borderColor: "#8e5ea2",
+										fill: false
+									}]
+								},
+								options: {
+									responsive: true,
+									title: {
+										display: true,
+										text: 'Loss Heights'
+									},
+									scales: {
+				                    xAxes: [{
+				                        display: true,
+				                        scaleLabel: {
+				                            display: true,
+				                            labelString: 'Percent of Years (%)'
+				                        }
+				                    }],
+				                    yAxes: [{
+				                        display: true,
+				                        scaleLabel: {
+				                            display: true,
+				                            labelString: 'Altitude (m)'
+				                        }
+				                    }]
+				                	}
+								}
+							});
+						</script>
+					</th>
+				</tr>
+			<tbody>
+		</table>
 		<br><br><br>
-		<div class="container text-center">
-			</canvas><canvas id="Loss Heights"></canvas>
-			<script type="text/javascript">
-				var ctx = document.getElementById('Loss Heights').getContext('2d');
-				new Chart(document.getElementById("Loss Heights"),{
-					type: 'line',
-					data: {
-						labels: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$timePercent[$i].", ";
-							} ?>],
-						datasets: [{ 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$hHidr[$i].", ";
-							} ?>],
-							label: "Hydraulic Losses",
-							borderColor: "#3e95cd",
-							fill: false
-						}, { 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$hCheia[$i].", ";
-							} ?>],
-							label: "Full Flow Losses",
-							borderColor: "#8e5ea2",
-							fill: false
-						}]
-					},
-					options: {
-						responsive: true,
-						title: {
-							display: true,
-							text: 'Loss Heights'
-						},
-						scales: {
-	                    xAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Percent of Years (%)'
-	                        }
-	                    }],
-	                    yAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Altitude (m)'
-	                        }
-	                    }]
-	                	}
-					}
-				});
-			</script>
-		</div>
-		<br><br><br>
-		<div class="container text-center">
-			</canvas><canvas id="AvailableElectricPower"></canvas>
-			<script type="text/javascript">
-				var ctx = document.getElementById('AvailableElectricPower').getContext('2d');
-				new Chart(document.getElementById("AvailableElectricPower"),{
-					type: 'line',
-					data: {
-						labels: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$timePercent[$i].", ";
-							} ?>],
-						datasets: [{ 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$P[$i].", ";
-							} ?>],
-							label: "Available Power",
-							borderColor: "#3e95cd",
-							fill: false
-						}, { 
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$Qusado[$i].", ";
-							} ?>],
-							label: "Used Flow",
-							borderColor: "#8e5ea2",
-							fill: false
-						}]
-					},
-					options: {
-						responsive: true,
-						title: {
-							display: true,
-							text: 'Available Electric Power'
-						},
-						scales: {
-	                    xAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Percent of Years (%)'
-	                        }
-	                    }],
-	                    yAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Power (kW)'
-	                        }
-	                    }]
-	                	}
-					}
-				});
-			</script>
-		</div>
-		<br> <br><br>
-		<div class="container text-center">
-			</canvas><canvas id="AvailableElectricPower"></canvas>
-			<script type="text/javascript">
-				var ctx = document.getElementById('AvailableElectricPower').getContext('2d');
-				new Chart(document.getElementById("AvailableElectricPower"),{
-					type: 'line',
-					data: {
-						labels: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$timePercent[$i].", ";
-							} ?>],
-
-						datasets: [{ 
-							label: "Available Power",
-							borderColor: "#3e95cd",
-							fill: false,
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$P[$i].", ";
-							} ?>], 
-							yAxisID: "y-axis-1",
-        					},{ 
-        					label: "Used Flow Rate",
-							borderColor: "#8e5ea2",
-							fill: false,	
-							data: [<?php 
-							for ($i=0; $i<($length); $i++){
-								echo "".$Qusado[$i].", ";
-							} ?>],
-							yAxisID: "y-axis-2"
-							
-						}]
-					},
-					options: {
-						responsive: true,
-						title: {
-							display: true,
-							text: 'Available Electric Power'
-						},
-						scales: {
-	                    xAxes: [{
-	                        display: true,
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Percent of Years (%)'
-	                        }
-	                    }],
-	                    yAxes: [{
-	                    	type: "linear",
-	                        display: true,
-	                        position: "left",
-	                        id: "y-axis-1",
-	                        scaleLabel: {
-	                            display: true,
-	                            labelString: 'Power (kW)'
-	                        }
-	                    },{
-	                    	gridLines: {drawOnChartArea: false,},	
-	                    	type: "linear",
-							display: true,
-							position: "right",
-							id: "y-axis-2",
-							scaleLabel: {
-								display: true,
-								labelString: 'm^3/s'
-							}
-
-	                    }]
-	                	}
-					}
-				});
-			</script>
+		<table style="width:80%" align="center" class="table">
+			<tbody>
+				<tr>
+					<th align="left">
+						</canvas><canvas id="AvailableElectricPower"></canvas>
+						<script type="text/javascript">
+							var ctx = document.getElementById('AvailableElectricPower').getContext('2d');
+							new Chart(document.getElementById("AvailableElectricPower"),{
+								type: 'line',
+								data: {
+									labels: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$timePercent[$i].", ";
+										} ?>],
+									datasets: [{ 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$P[$i].", ";
+										} ?>],
+										label: "Available Power",
+										borderColor: "#3e95cd",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$Qusado[$i].", ";
+										} ?>],
+										label: "Used Flow",
+										borderColor: "#8e5ea2",
+										fill: false
+									}]
+								},
+								options: {
+									responsive: true,
+									title: {
+										display: true,
+										text: 'Available Electric Power'
+									},
+									scales: {
+				                    xAxes: [{
+				                        display: true,
+				                        scaleLabel: {
+				                            display: true,
+				                            labelString: 'Percent of Years (%)'
+				                        }
+				                    }],
+				                    yAxes: [{
+				                        display: true,
+				                        scaleLabel: {
+				                            display: true,
+				                            labelString: 'Power (kW)'
+				                        }
+				                    }]
+				                	}
+								}
+							});
+						</script>
+					</th>
+				</tr>
+			<tbody>
+		</table>
 		</div>
 		<br> <br> <br>
 	</div>
