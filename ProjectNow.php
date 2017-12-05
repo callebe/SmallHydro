@@ -15,7 +15,51 @@
 	<!-- Custom Fonts -->
 	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic,700italic" rel="stylesheet" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">	
+	<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+	<script>
+		function myFunction() {
+			document.getElementById('Hb').value = "6.35";
+			document.getElementById('t').value = "5";
+			document.getElementById('pHidrMax').value = "4";
+			document.getElementById('hCheiaMax').value = "6.1";
+			document.getElementById('ng').value = "95";
+			document.getElementById('nTrafo').value = "99";
+			document.getElementById('pDiv').value = "2";
+			document.getElementById('Qn').value = "11.25";
+			document.getElementById('Qr').value = "1";
+		}
+	</script>
+	<script>
+		function myFunctionA() {
+			document.getElementById('Qt').value = "25*exp(-$t/100)";
+		}
+	</script>
+	<script>
+		function myFunctionB() {
+			document.getElementById('Qi[0]').value = "25";
+			document.getElementById('Qi[1]').value = "20.829";
+			document.getElementById('Qi[2]').value = "17.354";
+			document.getElementById('Qi[3]').value = "14.459";
+			document.getElementById('Qi[4]').value = "12.047";
+			document.getElementById('Qi[5]').value = "10.037";
+			document.getElementById('Qi[6]').value = "8.363";
+			document.getElementById('Qi[7]').value = "6.968";
+			document.getElementById('Qi[8]').value = "5.805";
+			document.getElementById('Qi[9]').value = "4.837";
+			document.getElementById('Qi[10]').value = "4.030";
+			document.getElementById('Qi[11]').value = "3.358";
+			document.getElementById('Qi[12]').value = "2.797";
+			document.getElementById('Qi[13]').value = "2.331";
+			document.getElementById('Qi[14]').value = "2.331";
+			document.getElementById('Qi[15]').value = "1.618";
+			document.getElementById('Qi[16]').value = "1.348";
+			document.getElementById('Qi[17]').value = "1.123";
+			document.getElementById('Qi[18]').value = "0.936";
+			document.getElementById('Qi[19]').value = "0.779";
+			document.getElementById('Qi[20]').value = "0.649";
+		}
+	</script>
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -69,75 +113,94 @@
 	</div>
 </header>
 
+
 <!-- Conteúdo -->
 <section id="about">
 	<div class="container text-center">
-		<div class="container text-center">
-					
-			<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
+		
+		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
 
-			<form name="AllInputs" action="Result.php" method="post" id="Entrada" class="form-horizontal">
-				<table style="width:50%" align="center">
-					<tr>
-						<th align="left">Gross head (Meters): </th>
-						<th align="rigth"><input class="form-control" type="number" class="form-control" name="Hb"  placeholder="Hb" min="0" max="5000" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Time Interval (% of Years) : </th>
-						<th align="rigth"><input type="number" class="form-control" class="form-control" name="t" placeholder="t" min="1" max="365" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">The Flow Rate Function (In t Terms): </th>
-						<th align="rigth"><input type="text" class="form-control" name="Qt"  placeholder="Q(t)" size=10 required></th> 
-					</tr>
-					<tr>
-						<th align="left">The Maximum Load Losses Value (%): </th>
-						<th align="rigth"><input type="number" class="form-control"  name="pHidrMax" placeholder="pHidrMax" min="0" max="100" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Maximum Decrease in Gross Head due to Full Flow (Meters): </th>
-						<th align="right"><input type="number" name="hCheiaMax" class="form-control"  name="hCheiaMax" placeholder="hCheiaMax" min="0" max="5000" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Generator Efficienc (%): </th>
-						<th align="rigth"><input type="number" name="ng" class="form-control"  placeholder="ng" min="0" max="100" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Transformer Efficienc (%): </th>
-						<th align="rigth"><input type="number" name="nTrafo" class="form-control"  placeholder="nTrafo" min="0" max="100" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Other Electric Losses (%): </th>
-						<th align="rigth"><input type="number" name="pDiv" class="form-control"  placeholder="pDiv" min="0" max="100" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Nominal Flow Rate (meters): </th>
-						<th align="rigth"><input type="number" name="Qn" class="form-control"  placeholder="Qn" min="0" max="100" step=0.001 required></th> 
-					</tr>
-					<tr>
-						<th align="left">Compensation Flow (meters): </th>
-						<th align="rigth"><input type="number" name="Qr" class="form-control"  placeholder="Qr" min="0" max="100" step=0.001 required></th> 
-					</tr>
-				</table>
-				<table style="width:50%" align="center">
-					<tr>
-						<th align="left">Type of Turbine: </th>
-						<th align="rigth"><select class="form-control" name="TypeTurbine">
-								<option value="Helix">Helix</option>
-								<option value="Kaplan">Kaplan</option>
-								<option value="Francis">Francis</option>
-								<option value="Pelton1">Pelton (1 Ozzle)</option>
-								<option value="Pelton2">Pelton (2 Ozzle)</option>
-							</select>
-						</th>
-					</tr>
-				</table>
-				<br> <br> <br>
-				<button type="submit" Name="Submit"  class="btn btn-primary">Project</button>
-			</form>
-			<br>
-		</div>
-			<h2><br> <br> <br></h2>
+		<?php
+			session_start(); # Deve ser a primeira linha do arquivo
+
+			if (empty($_POST["Hb"])){
+				$Process = 0;
+			}
+			else{
+
+				if($_POST["TypeQt"] == "Function"){
+					$Process = 1;
+				}
+				elseif ($_POST["TypeQt"] == "Discrete") {
+					$Process = 2;
+				}
+				else{
+					$Process = 0;
+				}
+			}
+
+			switch ($Process) {				
+
+				case '1':
+					$_SESSION['Hb'] = $_POST["Hb"];
+					$_SESSION['t'] = $_POST["t"];
+					$_SESSION['pHidrMax'] = $_POST["pHidrMax"];
+					$_SESSION['hCheiaMax'] = $_POST["hCheiaMax"];
+					$_SESSION['ng'] = $_POST["ng"];
+					$_SESSION['nTrafo'] = $_POST["nTrafo"];
+					$_SESSION['pDiv'] = $_POST["pDiv"];
+					$_SESSION['Qn'] = $_POST["Qn"];
+					$_SESSION['Qr'] = $_POST["Qr"];
+					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
+					$_SESSION['TypeQt'] = $_POST["TypeQt"];
+					$data = file_get_contents("ProcessQtEquation.php");
+					echo $data;
+					break;
+
+				case '2':
+					$_SESSION['Hb'] = $_POST["Hb"];
+					$_SESSION['t'] = $_POST["t"];
+					$_SESSION['pHidrMax'] = $_POST["pHidrMax"];
+					$_SESSION['hCheiaMax'] = $_POST["hCheiaMax"];
+					$_SESSION['ng'] = $_POST["ng"];
+					$_SESSION['nTrafo'] = $_POST["nTrafo"];
+					$_SESSION['pDiv'] = $_POST["pDiv"];
+					$_SESSION['Qn'] = $_POST["Qn"];
+					$_SESSION['Qr'] = $_POST["Qr"];
+					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
+					$_SESSION['TypeQt'] = $_POST["TypeQt"];
+					$data = file_get_contents("ProcessQtTableA.php");
+					echo $data;
+
+					for ($i = 0 ; $i<100/($_POST["t"])+1; $i++){
+						echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_POST["t"])."%: </th><th align=\"rigth\"><input type=\"text\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 required></th> 
+					</tr>";
+					}
+
+					$data = file_get_contents("ProcessQtTableB.php");
+					echo $data;
+					break;
+
+				default:
+					$_SESSION['Hb'] = "";
+					$_SESSION['t'] = "";
+					$_SESSION['pHidrMax'] = "";
+					$_SESSION['hCheiaMax'] = "";
+					$_SESSION['ng'] = "";
+					$_SESSION['nTrafo'] = "";
+					$_SESSION['pDiv'] = "";
+					$_SESSION['Qn'] = "";
+					$_SESSION['Qr'] = "";
+					$_SESSION['TypeTurbine'] = "";
+					$_SESSION['TypeQt'] = "";
+					$data = file_get_contents("InitialForm.php");
+					echo $data;
+					break;
+			}
+
+		?>
+		<h2><br> <br> <br></h2>
+
 	</div>
 </section>
 

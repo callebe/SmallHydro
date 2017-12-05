@@ -75,48 +75,69 @@
 <!-- Funções PHP Principais --!>
 <!-- Criação da Função Q(t) -->
 <?php
-	// diretório onde encontra-se o arquivo
-	$filename = "FlowRateFunction.php";
-	// verifica se existe o arquivo
-	if(file_exists($filename)){
-	  $script = file_get_contents($filename);
-	} else {
-	  $script = "";
-	}
-
-	//Adciona um novo texto
-	$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$_POST["Qt"]."; \n return \$R; }\n ?>";
-	//Escrevendo
-	$file = @fopen($filename, "w+");
-	@fwrite($file, $s);
-	@fclose($file);
+	if($_SESSION['TypeQt'] == "Function"){
+		// diretório onde encontra-se o arquivo
+		$filename = "FlowRateFunction.php";
+		// verifica se existe o arquivo
+		if(file_exists($filename)){
+			$script = file_get_contents($filename);
+		} 
+		else {
+			$script = "";
+		}
+		//Adciona um novo texto
+		$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$_POST["Qt"]."; \n return \$R; }\n ?>";
+		//Escrevendo
+		$file = @fopen($filename, "w+");
+		@fwrite($file, $s);
+		@fclose($file);	
+   }
 ?>
 
 <!-- Calculos -->
 <?php
-	
+	//Função de Calculo do Caldal em função do tempo
+	include 'FlowRateFunction.php';
+
+    session_start(); # Deve ser a primeira linha do arquivo
+
+
 	//Trazendo variaveis de Forms para o cálculo
-	$Hb = ($_POST["Hb"]);
-	$t = 365*$_POST["t"]/100;
-	$pHidrMax = ($_POST["pHidrMax"])/100;
-	$hCheiaMax = ($_POST["hCheiaMax"]);
-	$ng = ($_POST["ng"])/100;
-	$nTrafo = ($_POST["nTrafo"])/100;
-	$pDiv = ($_POST["pDiv"])/100;
-	$Qn = ($_POST["Qn"]);
-	$Qr = ($_POST["Qr"]);
-	$length = floor(100/$_POST["t"])+1;
+	$Hb = $_SESSION['Hb'];
+	$t = 365*$_SESSION['t']/100;
+	$pHidrMax = ($_SESSION['pHidrMax'])/100;
+	$hCheiaMax = ($_SESSION['hCheiaMax']);
+	$ng = ($_SESSION['ng'])/100;
+	$nTrafo = ($_SESSION['nTrafo'])/100;
+	$pDiv = ($_SESSION['pDiv'])/100;
+	$Qn = ($_SESSION['Qn']);
+	$Qr = ($_SESSION['Qr']);
+	$length = floor(100/$_SESSION["t"])+1;
 	$timePercent = array($length);
 	$time = array($length);
 	$timePercent[0] = 0;
 	$time[0] = 0;
+
+	
 	for ($i=1; $i<($length); $i++){
 		$time[$i] = $time[$i-1]+$t;
-		$timePercent[$i] = $timePercent[$i-1]+$_POST["t"];
+		$timePercent[$i] = $timePercent[$i-1]+$_SESSION["t"];
 	}
 
+	
+	if($_SESSION['TypeQt'] == "Function"){
+    	for ($i=0; $i<($length); $i++){
+			$Qi[$i] = FlowRateFunction($time[$i]);
+		}
+    	
+    }else{
+     	$Qi = $_POST["Qi"];
+    }
+
+    //echo "Hb = ".$Hb." t=".$t." pHidrMax = ".$pHidrMax." hCheiaMax = ".$hCheiaMax." ng = ".$ng." nTrafo = ".$nTrafo." pDiv = ".$pDiv." Qn = ".$Qn." Qr = ".$Qr." Type Turbine = ".$_SESSION['TypeTurbine']." TypeQt = ".$_SESSION['TypeQt']." <br>";
+
 	//Selecionando variáveis com base no tipo de Turbina
-	switch ($_POST["TypeTurbine"]) {
+	switch ($_SESSION['TypeTurbine']) {
 		case 'Helix':
 			$alpha = 1.25;
 			$beta = 1; 
@@ -158,25 +179,20 @@
 			break;
 	}
 
-	//Função de Calculo do Caldal em função do tempo
-	include 'FlowRateFunction.php';
-
 	$hHidr = array($length);
 	$hCheia = array($length);
 	$P = array($length);
 	$Qdisponivel = array($length);
 	$Qusado = array($length);
-	$Qi = array($length);
 	$Etotal = 0;
 
 	for ($i=0; $i<($length); $i++){
-		$Qi[$i] = FlowRateFunction($time[$i]);
 		$Qdisponivel[$i] =  max($Qi[$i]-$Qr, 0);
 		$Qusado[$i] =  min($Qdisponivel[$i], $Qn);
 		$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
 		$Qrevised = max($Qi[$i]-$Qn,0);
 		$hCheia[$i] = $hCheiaMax*pow($Qrevised/($Qi[0]-$Qn),2);
-		if ($_POST["TypeTurbine"]=='Francis'){
+		if (($_SESSION['TypeTurbine']) =='Francis'){
 			$beta = 1.1173*pow($Hb-$hHidr[$i],0.025);
   			$qui = 3.94-11.7*pow($Hb-$hHidr[$i],-0.5);
         }
@@ -185,8 +201,11 @@
 		if($i > 0){
 			$Etotal += ($P[$i-1]+P[i])/2*5/100*8760*(1-4/100);
 		}
+		
+		//echo "Qi = ".$Qi[$i]." Qdisponivel = ".$Qdisponivel[$i]." Qusado = ".$Qusado[$i]." Qn = ".$Qn." hHidr = ".$hHidr[$i]." hCheia = ".$hCheia[$i]." P".$P[$i]." E".$Etotal." <br>";
 	}
-	if ($_POST["TypeTurbine"]=='Francis'){
+
+	if (($_SESSION['TypeTurbine']) =='Francis'){
 	 	$QdisponivelN =  max($Qn-$Qr, 0);
 	 	$QusadoN =  min($QdisponivelN, $Qn);
 	 	$hHidrN = $Hb*$pHidrMax*pow($QusadoN/$Qn,2);
