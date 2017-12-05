@@ -202,7 +202,6 @@
 					echo $data;
 					break;
 			}
-
 		?>
 		<h2><br> <br> <br></h2>
 
