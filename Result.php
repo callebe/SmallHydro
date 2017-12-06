@@ -475,7 +475,7 @@
 <footer>
 	<div class="container text-center">
 		<p class="credits">
-			Copyright &copy; S. B.<br/>
+			Copyright S. B.&copy; <br/>
 		</p>
 	</div>
 </footer>
