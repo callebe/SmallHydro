@@ -1,8 +1,8 @@
-<form name="AllInputsA" action="Result.php" method="post" id="Entrada" class="form-horizontal">
+<form name="AllInputsA" action="ProjectNow.php" method="post" id="Entrada" class="form-horizontal">
 	<table style="width:50%" align="center">
 		<tr>
 			<th align="left">The Flow Rate Function (In t Terms): </th>
-			<th align="rigth"><input type="text" class="form-control" name="Qt"  id="Qt" placeholder="Q(t)" size=10 required></th> 
+			<th align="rigth"><input type="text" class="form-control" name="Qi"  id="Qi" placeholder="Q(t)" size=10 required></th> 
 		</tr>
 	</table>
 	<br>

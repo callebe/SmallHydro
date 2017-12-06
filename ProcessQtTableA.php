@@ -1,4 +1,4 @@
-<form name="AllInputsB" action="Result.php" method="post" id="Entrada" class="form-horizontal">
+<form name="AllInputsB" action="ProjectNow.php" method="post" id="Entrada" class="form-horizontal">
 	<table style="width:30%" align="center" class="table">
 		<tbody>
 			

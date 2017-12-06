@@ -1,3 +1,7 @@
+<!-- Iniciar Seção -->
+<?php
+	session_start(); # Deve ser a primeira linha do arquivo
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +21,7 @@
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic,700italic" rel="stylesheet" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 	<script>
-		function myFunction() {
+		function myFunction(){
 			document.getElementById('Hb').value = "6.35";
 			document.getElementById('t').value = "5";
 			document.getElementById('pHidrMax').value = "4";
@@ -30,12 +34,12 @@
 		}
 	</script>
 	<script>
-		function myFunctionA() {
-			document.getElementById('Qt').value = "25*exp(-$t/100)";
+		function myFunctionA(){
+			document.getElementById('Qi').value = "25*exp(-$t/100)";
 		}
 	</script>
 	<script>
-		function myFunctionB() {
+		function myFunctionB(){
 			document.getElementById('Qi[0]').value = "25";
 			document.getElementById('Qi[1]').value = "20.829";
 			document.getElementById('Qi[2]').value = "17.354";
@@ -60,9 +64,23 @@
 		}
 	</script>
 	<script>
+		function myFunctionC(){
+			document.getElementById('hFun').value = "2500";
+			document.getElementById('invUni').value = "1200";
+			document.getElementById('txAt').value = "0.07";
+			document.getElementById('venEner').value = "75";
+			document.getElementById('encManu').value = "0.015";
+			document.getElementById('anos').value = "20";
+		}
+	</script>
+	<script>
+		function Destiny(){
+			return 24;
+		}
+	</script>
+	<script>
 		window.location.href='#ancora';
 	</script>
-	
 
 </head>
 
@@ -82,7 +100,7 @@
 		<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
 			<ul class="nav navbar-nav">
 				<li>
-				<a href="index.html">Home</a>
+				<a href="index.html" onclick="session_destroy()" >Home</a>
 				</li>
 				<li>
 				<a href="ProjectNow.php">Project Now</a>
@@ -125,22 +143,36 @@
 
 		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
 		
-		<?php
-			session_start(); # Deve ser a primeira linha do arquivo
-
-			if (empty($_POST["Hb"])){
-				$Process = 0;
-			}
-			else{
-
-				if($_POST["TypeQt"] == "Function"){
-					$Process = 1;
-				}
-				elseif ($_POST["TypeQt"] == "Discrete") {
-					$Process = 2;
+ 		<?php
+ 			$Process = $_SESSION['Process'];
+ 			
+ 			if($Process == 0){
+ 				if(empty($_POST["Hb"])){
+ 					$Process = 0;
 				}
 				else{
+					if($_POST["TypeQt"] == "Discrete"){
+						$Process = 2;
+					}
+					else{
+						$Process = 1;
+					}
+				}
+			}
+			else{
+				if(empty($_POST["Qi"])){
 					$Process = 0;
+				}
+				else{
+					if($_SESSION['TypeQt'] == "Discrete"){
+						$Process = 4;
+					}
+					elseif($_SESSION['TypeQt'] == "Function"){
+						$Process = 3;	
+					}
+					else{
+						$Process = 0;
+					}
 				}
 			}
 
@@ -176,13 +208,42 @@
 					$_SESSION['TypeQt'] = $_POST["TypeQt"];
 					$data = file_get_contents("ProcessQtTableA.php");
 					echo $data;
-
-					for ($i = 0 ; $i<100/($_POST["t"])+1; $i++){
-						echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_POST["t"])."%: </th><th align=\"rigth\"><input type=\"text\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 required></th> 
+					for ($i = 0 ; $i<100/($_SESSION['t'])+1; $i++){
+						echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"text\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 required></th> 
 					</tr>";
 					}
-
 					$data = file_get_contents("ProcessQtTableB.php");
+					echo $data;
+					break;
+
+				case '3':
+					// diretório onde encontra-se o arquivo
+					$filename = "FlowRateFunction.php";
+					// verifica se existe o arquivo
+					if(file_exists($filename)){
+						$script = file_get_contents($filename);
+					} 
+					else {
+						$script = "";
+					}
+					//Adciona um novo texto
+					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$_POST["Qi"]."; \n return \$R; }\n ?>";
+					//Escrevendo
+					$file = @fopen($filename, "w+");
+					@fwrite($file, $s);
+					@fclose($file);	
+					
+					include 'FlowRateFunction.php';
+					for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
+						$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
+					}
+					$data = file_get_contents("FinantialProcess.php");
+					echo $data;
+					break;
+
+				case '4':
+					$_SESSION["Qi"] = $_POST["Qi"];
+					$data = file_get_contents("FinantialProcess.php");
 					echo $data;
 					break;
 
@@ -202,6 +263,7 @@
 					echo $data;
 					break;
 			}
+			$_SESSION['Process'] = $Process; 
 		?>
 		<h2><br> <br> <br></h2>
 
@@ -212,7 +274,7 @@
 <footer>
 	<div class="container text-center">
 		<p class="credits">
-			Copyright &copy; S.B.<br/>
+			Copyright S. B.&copy; <br/>
 		</p>
 	</div>
 </footer>

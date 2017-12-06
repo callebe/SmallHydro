@@ -1,3 +1,7 @@
+<!-- Iniciar Seção -->
+<?php 
+	session_start(); # Deve ser a primeira linha do arquivo
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,33 +81,12 @@
 
 <!-- Funções PHP Principais --!>
 <!-- Criação da Função Q(t) -->
-<?php
-	if($_SESSION['TypeQt'] == "Function"){
-		// diretório onde encontra-se o arquivo
-		$filename = "FlowRateFunction.php";
-		// verifica se existe o arquivo
-		if(file_exists($filename)){
-			$script = file_get_contents($filename);
-		} 
-		else {
-			$script = "";
-		}
-		//Adciona um novo texto
-		$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$_POST["Qt"]."; \n return \$R; }\n ?>";
-		//Escrevendo
-		$file = @fopen($filename, "w+");
-		@fwrite($file, $s);
-		@fclose($file);	
-   }
-?>
+
 
 <!-- Calculos -->
 <?php
 	//Função de Calculo do Caldal em função do tempo
-	include 'FlowRateFunction.php';
-
-    session_start(); # Deve ser a primeira linha do arquivo
-
+	//include 'FlowRateFunction.php';
 
 	//Trazendo variaveis de Forms para o cálculo
 	$Hb = $_SESSION['Hb'];
@@ -115,27 +98,17 @@
 	$pDiv = ($_SESSION['pDiv'])/100;
 	$Qn = ($_SESSION['Qn']);
 	$Qr = ($_SESSION['Qr']);
+	$Qi = ($_SESSION["Qi"]);
 	$length = floor(100/$_SESSION["t"])+1;
 	$timePercent = array($length);
 	$time = array($length);
 	$timePercent[0] = 0;
 	$time[0] = 0;
-
 	
 	for ($i=1; $i<($length); $i++){
 		$time[$i] = $time[$i-1]+$t;
 		$timePercent[$i] = $timePercent[$i-1]+$_SESSION["t"];
 	}
-
-	
-	if($_SESSION['TypeQt'] == "Function"){
-    	for ($i=0; $i<($length); $i++){
-			$Qi[$i] = FlowRateFunction($time[$i]);
-		}
-    	
-    }else{
-     	$Qi = $_POST["Qi"];
-    }
 
     //echo "Hb = ".$Hb." t=".$t." pHidrMax = ".$pHidrMax." hCheiaMax = ".$hCheiaMax." ng = ".$ng." nTrafo = ".$nTrafo." pDiv = ".$pDiv." Qn = ".$Qn." Qr = ".$Qr." Type Turbine = ".$_SESSION['TypeTurbine']." TypeQt = ".$_SESSION['TypeQt']." <br>";
 
@@ -175,13 +148,14 @@
 			break;
 
 		default:
-			$alpha = 1;
-			$beta = 1; 
-			$qui = 1;
-			$delta = 1;
+			$alpha = 3.5;
+			$beta = 1.333; 
+			$qui = 6;
+			$delta = 0.905;
 			break;
 	}
 
+	//Variáveis de simulação
 	$hHidr = array($length);
 	$hCheia = array($length);
 	$P = array($length);
@@ -189,7 +163,8 @@
 	$Qusado = array($length);
 	$Etotal = 0;
 
-	for ($i=0; $i<($length); $i++){
+	//Cálulo da Potência, Caudais e Energia
+	for ($i=0; $i<=($length); $i++){
 		$Qdisponivel[$i] =  max($Qi[$i]-$Qr, 0);
 		$Qusado[$i] =  min($Qdisponivel[$i], $Qn);
 		$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
@@ -199,25 +174,66 @@
 			$beta = 1.1173*pow($Hb-$hHidr[$i],0.025);
   			$qui = 3.94-11.7*pow($Hb-$hHidr[$i],-0.5);
         }
-		$nt = max(1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui)*$delta,0);
-		$P[$i] = 9810*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv)/(1000);
+		$nt = max((1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui))*$delta,0);
+		$P[$i] = max((9810/1000)*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv),0);
 		if($i > 0){
-			$Etotal += ($P[$i-1]+P[i])/2*5/100*8760*(1-4/100);
-		}
-		
+			$Etotal = $Etotal + ($P[$i-1]+P[$i])/2;
+		}		
 		//echo "Qi = ".$Qi[$i]." Qdisponivel = ".$Qdisponivel[$i]." Qusado = ".$Qusado[$i]." Qn = ".$Qn." hHidr = ".$hHidr[$i]." hCheia = ".$hCheia[$i]." P".$P[$i]." E".$Etotal." <br>";
 	}
-
+	$Etotal = $Etotal*0.05*8760*(1-4/100);
+	
+	//Cálculo da potência nominal
 	if (($_SESSION['TypeTurbine']) =='Francis'){
-	 	$QdisponivelN =  max($Qn-$Qr, 0);
-	 	$QusadoN =  min($QdisponivelN, $Qn);
-	 	$hHidrN = $Hb*$pHidrMax*pow($QusadoN/$Qn,2);
-		$beta = 1.1173*pow($Hb-$hHidrN,0.025);
- 		$qui = 3.94-11.7*pow($Hb-$hHidrN,-0.5);
+	 	$beta = 1.1173*pow($Hb*(1-$pHidrMax),0.025);
+ 		$qui = 3.94-11.7*pow($Hb*(1-$pHidrMax),-0.5);
     }
-	$ntN = max(1-$alpha*pow(abs(1-$beta),$qui)*$delta,0);
+	$ntN = max((1-$alpha*pow(abs(1-$beta),$qui))*$delta,0);
 	$hHidrN = $Hb*$pHidrMax;
 	$Pn = 9810/1000*$Qn*($Hb-$hHidrN)*$ntN*$ng*$nTrafo*(1-$pDiv);
+
+	// Análise econômica
+	$hFun = $_POST["hFun"]; //Horas de funcionamento AQUI
+	$invUni = $_POST["invUni"]; //Investimento unitário ($/MW) AQUI
+	$txAt = $_POST["txAt"]; //Taxa de atualização AQUI
+	$venEner = $_POST["venEner"]; //Venda de energia em $/MWh AQUI
+	$encManu = $_POST["encManu"]; //Encargos com manutenção AQUI 
+	$anos = $_POST["anos"]; //Anos a considerar AQUI
+
+	$invIni = $Pn*$invUni; //Investimento inical
+	$receiAnu = $hFun*$Pn*$venEner/1000; //Receita anual
+	$despInvAnu = $Pn*$invUni*$encManu; //Manunenção anual
+	$fluxoMo = $receiAnu-$despInvAnu; //fluxo monetário
+
+	$cashFlow = array($anos);
+	$cashFlow[0] = -$invIni;
+	$cashFlowAtu = array($anos);
+	$cashFlowAtu[0] = -$invIni;
+	$cashFlowAtAcu = array($anos);
+	$cashFlowAtAcu[0] = -$invIni;
+	
+	for($c = 1; $c <= $anos; $c++){
+		$cashFlow[$c] = $fluxoMo;
+	    $cashFlowAtu[$c] = $cashFlow[$c]/(pow(1+$txAt,$c));
+	    $cashFlowAtAcu[$c] = $cashFlowAtAcu[$c-1]+$cashFlowAtu[$c];
+	}
+	
+	//VAL
+	$VAL = 0;
+	for($c = 0; $c <= $anos; $c++){
+		$VAL += $cashFlowAtu[$c];	
+	}
+	
+	//TIR
+	$TIRAnt =(($fluxoMo)/$invIni)*((pow(1+$txAt,$anos-1))/pow(1+$txAt,$anos));
+	$VALCal = $cashFlow[0];
+	$erro = 1;
+	
+	while (abs($erro) > 0.00001){
+	   $TIR = (($fluxoMo)/$invIni)*((pow(1+$TIRAnt,$anos-1))/pow(1+$TIRAnt,$anos));
+	   $erro = $TIR - $TIRAnt;
+	   $TIRAnt = $TIR;
+	}
 ?>
 
 <!-- Seção do Conteúdo -->
@@ -227,22 +243,30 @@
 			<h3><br> <br> <br> Results <br></h3>
 		</div>
 		<br><br><br>
-		<table style="width:30%" align="center" class="table">
+		<table style="width:40%" align="center" class="table">
 			<tbody>
 				<tr>
 					<th align="left">Total Year Energy: </th>
 					<th align="rigth"><?php 
 						if($Etotal<1000){
-							echo "".number_format($Etotal, 3)." kWh";
+							echo "".number_format($Etotal, 2)." kWh";
 						}
 						else{
-							echo "".number_format($Etotal/1000, 3)." MWh";
+							echo "".number_format($Etotal/1000, 2)." MWh";
 						} ?>		
 					</th>
 				</tr>
 				<tr>
 					<th align="left">Nominal Power:</th>
-					<th align="rigth"><?php echo "".number_format($Pn, 3)." kWh"; ?></th>
+					<th align="rigth"><?php echo "".number_format($Pn, 2)." kWh"; ?></th>
+				</tr>
+				<tr>
+					<th align="left">Net Present Value (NPV):</th>
+					<th align="rigth"><?php echo "".number_format($VAL, 2)." Euros"; ?></th>
+				</tr>
+				<tr>
+					<th align="left">Internal Rate of Return (IRR):</th>
+					<th align="rigth"><?php echo "".number_format(100*$TIR, 2)." %"; ?></th>
 				</tr>
 			<tbody>
 		</table>
