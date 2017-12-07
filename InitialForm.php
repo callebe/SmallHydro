@@ -1,4 +1,4 @@
-<form name="AllInputs" action="ProjectNow.php" method="post" id="Entrada" class="form-horizontal">
+<form name="AllInputs" action="ProjectNow.php" method="post" class="form-horizontal">
 	<table style="width:50%" align="center">
 		<tr>
 			<th align="left">Gross head (Meters): </th>

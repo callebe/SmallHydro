@@ -40,7 +40,7 @@
 				<a href="ProjectNow.php">Project Now</a>
 				</li>
 				<li>
-				<a href="Contact.html">Contact Us</a>
+				<a href="ContactUs.php">Contact</a>
 				</li>
 			</ul>
 		</div>

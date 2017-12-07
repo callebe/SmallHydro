@@ -1,6 +1,8 @@
 <!-- Iniciar Seção -->
 <?php
-	session_start(); # Deve ser a primeira linha do arquivo
+	session_start('User'); //esse comando deve estar na primeira linha
+	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
+	ob_start(); //ob_start — Ativa o buffer de saída
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,11 +76,6 @@
 		}
 	</script>
 	<script>
-		function Destiny(){
-			return 24;
-		}
-	</script>
-	<script>
 		window.location.href='#ancora';
 	</script>
 
@@ -100,16 +97,13 @@
 		<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
 			<ul class="nav navbar-nav">
 				<li>
-				<a href="index.html" onclick="session_destroy()" >Home</a>
+				<a href="index.html">Home</a>
 				</li>
 				<li>
 				<a href="ProjectNow.php">Project Now</a>
 				</li>
 				<li>
-				<a href="InvolvedTheory.html">Involved Theory</a>
-				</li>
-				<li>
-				<a href="Contact.html">Contact</a>
+				<a href="ContactUs.php">Contact</a>
 				</li>
 			</ul>
 		</div>

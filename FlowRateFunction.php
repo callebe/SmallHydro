@@ -1,5 +1,5 @@
 <?php 
  function FlowRateFunction($t) {
- $R = 25*sin(-$t/100); 
+ $R = sin($t/100+1); 
  return $R; }
  ?>
