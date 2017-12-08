@@ -1,6 +1,8 @@
 <!-- Iniciar Seção -->
-<?php 
-	session_start(); # Deve ser a primeira linha do arquivo
+<?php
+	session_start('User'); //esse comando deve estar na primeira linha
+	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
+	ob_start(); //ob_start — Ativa o buffer de saída
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,10 +53,7 @@
 				<a href="ProjectNow.php">Project Now</a>
 				</li>
 				<li>
-				<a href="InvolvedTheory.html">Involved Theory</a>
-				</li>
-				<li>
-				<a href="Contact.html">Contact</a>
+				<a href="ContactUs.php">Contact</a>
 				</li>
 			</ul>
 		</div>
@@ -164,7 +163,7 @@
 	$Etotal = 0;
 
 	//Cálulo da Potência, Caudais e Energia
-	for ($i=0; $i<=($length); $i++){
+	for ($i=0; $i<($length); $i++){
 		$Qdisponivel[$i] =  max($Qi[$i]-$Qr, 0);
 		$Qusado[$i] =  min($Qdisponivel[$i], $Qn);
 		$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
@@ -177,7 +176,7 @@
 		$nt = max((1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui))*$delta,0);
 		$P[$i] = max((9810/1000)*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv),0);
 		if($i > 0){
-			$Etotal = $Etotal + ($P[$i-1]+P[$i])/2;
+			$Etotal = $Etotal + ($P[$i-1]+$P[$i])/2;
 		}		
 		//echo "Qi = ".$Qi[$i]." Qdisponivel = ".$Qdisponivel[$i]." Qusado = ".$Qusado[$i]." Qn = ".$Qn." hHidr = ".$hHidr[$i]." hCheia = ".$hCheia[$i]." P".$P[$i]." E".$Etotal." <br>";
 	}
@@ -243,7 +242,7 @@
 			<h3><br> <br> <br> Results <br></h3>
 		</div>
 		<br><br><br>
-		<table style="width:40%" align="center" class="table">
+		<table style="width:40%"  align="center" class="table">
 			<tbody>
 				<tr>
 					<th align="left">Total Year Energy: </th>

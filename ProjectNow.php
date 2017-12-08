@@ -1,6 +1,8 @@
 <!-- Iniciar Seção -->
 <?php
-	session_start(); # Deve ser a primeira linha do arquivo
+	session_start('User'); //esse comando deve estar na primeira linha
+	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
+	ob_start(); //ob_start — Ativa o buffer de saída
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +37,7 @@
 	</script>
 	<script>
 		function myFunctionA(){
-			document.getElementById('Qi').value = "25*exp(-$t/100)";
+			document.getElementById('Qi').value = "25*exp(-t/100)";
 		}
 	</script>
 	<script>
@@ -74,11 +76,6 @@
 		}
 	</script>
 	<script>
-		function Destiny(){
-			return 24;
-		}
-	</script>
-	<script>
 		window.location.href='#ancora';
 	</script>
 
@@ -100,16 +97,13 @@
 		<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
 			<ul class="nav navbar-nav">
 				<li>
-				<a href="index.html" onclick="session_destroy()" >Home</a>
+				<a href="index.html">Home</a>
 				</li>
 				<li>
 				<a href="ProjectNow.php">Project Now</a>
 				</li>
 				<li>
-				<a href="InvolvedTheory.html">Involved Theory</a>
-				</li>
-				<li>
-				<a href="Contact.html">Contact</a>
+				<a href="ContactUs.php">Contact</a>
 				</li>
 			</ul>
 		</div>
@@ -217,31 +211,39 @@
 					break;
 
 				case '3':
+					//Adicionando $ na variável t
+					$Qiaux = $_POST["Qi"];
+					$Qi = str_replace("t", "\$t", $Qiaux);
+
 					// diretório onde encontra-se o arquivo
 					$filename = "FlowRateFunction.php";
 					// verifica se existe o arquivo
-					if(file_exists($filename)){
-						$script = file_get_contents($filename);
-					} 
-					else {
-						$script = "";
+					while(file_exists($filename)){
+
 					}
 					//Adciona um novo texto
-					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$_POST["Qi"]."; \n return \$R; }\n ?>";
+					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
 					//Escrevendo
 					$file = @fopen($filename, "w+");
 					@fwrite($file, $s);
 					@fclose($file);	
 					
+					//Calcula os Pontos de Qi
 					include 'FlowRateFunction.php';
 					for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
 						$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
 					}
+
+					//Exclui o Arquivo Criado Anteriormente
+					unlink('FlowRateFunction.php');  //Deleta Arquivo
+
+					//Printa o Processo financial 
 					$data = file_get_contents("FinantialProcess.php");
 					echo $data;
 					break;
 
 				case '4':
+					//Printa o Processo financial 
 					$_SESSION["Qi"] = $_POST["Qi"];
 					$data = file_get_contents("FinantialProcess.php");
 					echo $data;

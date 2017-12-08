@@ -1,4 +1,4 @@
-<form name="AllInputs" action="ProjectNow.php" method="post" id="Entrada" class="form-horizontal">
+<form name="AllInputs" action="ProjectNow.php" method="post" class="form-horizontal">
 	<table style="width:50%" align="center">
 		<tr>
 			<th align="left">Gross head (Meters): </th>
@@ -61,12 +61,14 @@
 		</tr>
 	</table>
 	<br>
-	<table style="width:50%" align="center">
-		<tr>
-			<th align="left"><button onclick="myFunction()" class="btn btn-secondary">Try Exemple</button></th>
-			<th align="rigth"></th>
-		</tr>
-	</table>
-	<br><br><br>
-	<button type="submit" Name="Submit"  class="btn btn-primary">Next</button>
+	<br>
+	<button type="submit" Name="submit"  class="btn btn-primary">Next</button>
 </form>
+<br>
+<br>
+<table style="width:50%" align="center">
+	<tr>
+		<th align="left"><button onclick="myFunction()" class="btn btn-secondary">Try Exemple</button></th>
+		<th align="rigth"></th>
+	</tr>
+</table>
