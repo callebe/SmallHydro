@@ -37,7 +37,7 @@
 	</script>
 	<script>
 		function myFunctionA(){
-			document.getElementById('Qi').value = "25*exp(-$t/100)";
+			document.getElementById('Qi').value = "25*exp(-t/100)";
 		}
 	</script>
 	<script>
@@ -211,31 +211,39 @@
 					break;
 
 				case '3':
+					//Adicionando $ na variável t
+					$Qiaux = $_POST["Qi"];
+					$Qi = str_replace("t", "\$t", $Qiaux);
+
 					// diretório onde encontra-se o arquivo
 					$filename = "FlowRateFunction.php";
 					// verifica se existe o arquivo
-					if(file_exists($filename)){
-						$script = file_get_contents($filename);
-					} 
-					else {
-						$script = "";
+					while(file_exists($filename)){
+
 					}
 					//Adciona um novo texto
-					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$_POST["Qi"]."; \n return \$R; }\n ?>";
+					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
 					//Escrevendo
 					$file = @fopen($filename, "w+");
 					@fwrite($file, $s);
 					@fclose($file);	
 					
+					//Calcula os Pontos de Qi
 					include 'FlowRateFunction.php';
 					for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
 						$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
 					}
+
+					//Exclui o Arquivo Criado Anteriormente
+					unlink('FlowRateFunction.php');  //Deleta Arquivo
+
+					//Printa o Processo financial 
 					$data = file_get_contents("FinantialProcess.php");
 					echo $data;
 					break;
 
 				case '4':
+					//Printa o Processo financial 
 					$_SESSION["Qi"] = $_POST["Qi"];
 					$data = file_get_contents("FinantialProcess.php");
 					echo $data;

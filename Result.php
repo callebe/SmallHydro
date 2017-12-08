@@ -242,7 +242,7 @@
 			<h3><br> <br> <br> Results <br></h3>
 		</div>
 		<br><br><br>
-		<table style="width:40%" align="center" class="table">
+		<table style="width:40%"  align="center" class="table">
 			<tbody>
 				<tr>
 					<th align="left">Total Year Energy: </th>
@@ -491,8 +491,3 @@
 
 </body>
 </html>
-<!-- Fim da Seção -->
-<?php
-	session_unset(); 
-	session_destroy(); 
-?>
