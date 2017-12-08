@@ -1,3 +1,10 @@
+<!-- Iniciar Seção -->
+<?php
+	session_start('User'); //esse comando deve estar na primeira linha
+	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
+	ob_start(); //ob_start — Ativa o buffer de saída
+	$_SESSION['Process'] = 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,13 +41,10 @@
 		<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
 			<ul class="nav navbar-nav">
 				<li>
-				<a href="index.html">Home</a>
+				<a href="index.php">Home</a>
 				</li>
 				<li>
 				<a href="ProjectNow.php">Project Now</a>
-				</li>
-				<li>
-				<a href="InvolvedTheory.html">Involved Theory</a>
 				</li>
 				<li>
 				<a href="Contact.html">Contact</a>
@@ -70,20 +74,28 @@
 	</div>
 </header>
 
-<!-- Conteúdo -->
+<!-- Counteúdo -->
 <section id="about">
 	<div class="col-md-8 col-md-offset-2 text-center">
 		<div class="row">
 			<div> <br> <br> <br> <br> <br> <br></div>
 			<h3>Project you Small Hydro <br> using the Detailed Model</h3>
-			<div class="col-lg-8 col-lg-offset-2">
+			<br> <br>
+			<table style="width:90%" align="center">
+				<tr>
+					<th align="left"><img src="img/Exemple.png" alt="Exemple Index">
+					</th>
+				</tr>
+			</table>
+			<div class="col-lg-9 col-lg-offset-2">			
 				<p align="left">
 					In this website, with the introduction of hydroelectric resource data and turbine characteristics, you can be get the energy output, rated power of the electric equipment and among others parameters.
 				</p>
 				<p align="center">
 					<a href="InvolvedTheory.html" class="btnghost"><i class="fa fa-search" aria-hidden="true"></i> Involved Theory </a>
-					<a href="ProjectNow.html" class="btnghost"><i class="fa fa-cog" aria-hidden="true"></i> Project Now </a>
+					<a href="ProjectNow.php" class="btnghost"><i class="fa fa-cog" aria-hidden="true"></i> Project Now </a>
 				</p>
+				<h2><br> <br> <br> </h2>
 			</div>
 		</div>
 	</div>
@@ -96,7 +108,7 @@
 			Copyright S. B.&copy; <br/>
 		</p>
 	</div>
-</footer
+</footer>
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
@@ -106,6 +118,5 @@
 <script src="js/jquery.easing.min.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="js/theme.js"></script>
-
 </body>
 </html>

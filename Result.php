@@ -47,7 +47,7 @@
 		<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
 			<ul class="nav navbar-nav">
 				<li>
-				<a href="index.html">Home</a>
+				<a href="index.php">Home</a>
 				</li>
 				<li>
 				<a href="ProjectNow.php">Project Now</a>

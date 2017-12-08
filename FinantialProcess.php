@@ -27,7 +27,7 @@
 	</table>
 	<br>
 	<br>
-	<button type="submit" Name="Submit"  class="btn btn-primary">Next</button>
+	<button type="submit" Name="Submit"  class="btn btn-primary">Project</button>
 </form>
 <br>
 <br>
