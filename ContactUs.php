@@ -1,10 +1,3 @@
-<!-- Iniciar Seção -->
-<?php
-	session_start('User'); //esse comando deve estar na primeira linha
-	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
-	ob_start(); //ob_start — Ativa o buffer de saída
-	$_SESSION['Process'] = 0;
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +81,7 @@
                     <div class="col-xs-12 col-sm-9">
                         <span class="name"><h4>Callebe S. Barbosa</h4></span><br/>
                         <a href="mailto:callebe.barbosa@gmail.com?Subject=ProjectYourSH%20Contact" class="email"><i class="fa fa-envelope" aria-hidden="true"></i>  callebe.barbosa@gmail.com<br></a>
-                        <a href="skype:callebe_7?call" class="skype"><i class="fa fa-skype"></i>  callebe_7<br></a>
+                        <a href="https://api.whatsapp.com/send?phone=351932958139&text=Hi%20Callebe" class="whatsapp"><i class="fa fa-phone"></i>  +351 932 958 139<br></a>
                         <a href="http://www.linkedin.com/in/callebe-barbosa" class="linkedin"><i class="fa fa-linkedin"></i>  callebe-barbosa<br></a>
                     </div>
                     <div class="clearfix"></div>

@@ -1,10 +1,3 @@
-<!-- Iniciar Seção -->
-<?php
-	session_start('User'); //esse comando deve estar na primeira linha
-	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
-	ob_start(); //ob_start — Ativa o buffer de saída
-	$_SESSION['Process'] = 0;
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +40,7 @@
 				<a href="ProjectNow.php">Project Now</a>
 				</li>
 				<li>
-				<a href="Contact.html">Contact</a>
+				<a href="ContactUs.php">Contact</a>
 				</li>
 			</ul>
 		</div>
@@ -92,7 +85,7 @@
 					In this website, with the introduction of hydroelectric resource data and turbine characteristics, you can be get the energy output, rated power of the electric equipment and among others parameters.
 				</p>
 				<p align="center">
-					<a href="InvolvedTheory.html" class="btnghost"><i class="fa fa-search" aria-hidden="true"></i> Involved Theory </a>
+					<a href="ContactUs.php" class="btnghost"><i class="fa fa-search" aria-hidden="true"></i> Contact Us </a>
 					<a href="ProjectNow.php" class="btnghost"><i class="fa fa-cog" aria-hidden="true"></i> Project Now </a>
 				</p>
 				<h2><br> <br> <br> </h2>

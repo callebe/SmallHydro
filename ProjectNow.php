@@ -138,37 +138,30 @@
 		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
 		
  		<?php
- 			$Process = $_SESSION['Process'];
-
- 			if($Process == 0){
- 				if(empty($_POST["Hb"])){
- 					$Process = 0;
-				}
-				else{
-					if($_POST["TypeQt"] == "Discrete"){
-						$Process = 2;
-					}
-					else{
-						$Process = 1;
-					}
-				}
-			}
-			else{
-				if(empty($_POST["Qi"])){
-					$Process = 0;
-				}
-				else{
-					if($_SESSION['TypeQt'] == "Discrete"){
-						$Process = 4;
-					}
-					elseif($_SESSION['TypeQt'] == "Function"){
-						$Process = 3;	
-					}
-					else{
-						$Process = 0;
-					}
-				}
-			}
+ 		
+ 			if(empty($_POST["Hb"]) & empty($_POST["Qi"]) & empty($_POST["hFun"])){
+ 				$Process = 0;
+ 			}
+ 			else{
+ 				if(empty($_POST["Qi"]) & empty($_POST["hFun"])){
+ 					if($_POST["TypeQt"] == "Discrete"){
+ 						$Process = 2;	
+ 					}
+ 					else{
+ 						$Process = 1;
+ 					}
+ 				}
+ 				else{
+ 					if(empty($_POST["hFun"])){
+						if($_SESSION['TypeQt'] == "Discrete"){
+							$Process = 4;	
+						}
+						else{
+							$Process = 3;
+						}
+ 					}
+ 				}
+ 			}
 
 			switch ($Process) {				
 
@@ -265,7 +258,6 @@
 					echo $data;
 					break;
 			}
-			$_SESSION['Process'] = $Process; 
 		?>
 		<h2><br> <br> <br></h2>
 
