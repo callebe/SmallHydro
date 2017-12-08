@@ -5,7 +5,7 @@
 			<th align="rigth"><input type="number" class="form-control" name="hFun" id="hFun" placeholder="hFun" min="0" max="5000" step=0.1 required></th> 
 		</tr>
 		<tr>
-			<th align="left">Initial Investment ($) : </th>
+			<th align="left">Initial Unit Investiment ($) : </th>
 			<th align="rigth"><input type="number" class="form-control"  name="invUni" id="invUni" placeholder="invUni" min="1"  step=1 required></th> 
 		</tr>
 		<tr>
@@ -17,7 +17,7 @@
 			<th align="right"><input type="number" class="form-control"  name="venEner" id="venEner" placeholder="venEner" min="0" step=0.001 required></th> 
 		</tr>
 		<tr>
-			<th align="left">Maintenance Costs ($): </th>
+			<th align="left">Maintenance Costs (%): </th>
 			<th align="rigth"><input type="number" name="encManu" id="encManu" class="form-control"  placeholder="encManu" min="0"  step=0.001 required></th> 
 		</tr>
 		<tr>

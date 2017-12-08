@@ -4,7 +4,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+	
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -195,9 +195,9 @@
 	// Análise econômica
 	$hFun = $_POST["hFun"]; //Horas de funcionamento AQUI
 	$invUni = $_POST["invUni"]; //Investimento unitário ($/MW) AQUI
-	$txAt = $_POST["txAt"]; //Taxa de atualização AQUI
+	$txAt = $_POST["txAt"]/100; //Taxa de atualização AQUI
 	$venEner = $_POST["venEner"]; //Venda de energia em $/MWh AQUI
-	$encManu = $_POST["encManu"]; //Encargos com manutenção AQUI 
+	$encManu = $_POST["encManu"]/100; //Encargos com manutenção AQUI 
 	$anos = $_POST["anos"]; //Anos a considerar AQUI
 
 	$invIni = $Pn*$invUni; //Investimento inical
@@ -223,10 +223,10 @@
 	for($c = 0; $c <= $anos; $c++){
 		$VAL += $cashFlowAtu[$c];	
 	}
-	
+
 	//TIR
 	$TIRAnt =(($fluxoMo)/$invIni)*((pow(1+$txAt,$anos-1))/pow(1+$txAt,$anos));
-	$VALCal = $cashFlow[0];
+	$VALCal = $VAL;
 	$erro = 1;
 	
 	while (abs($erro) > 0.00001){
@@ -265,7 +265,7 @@
 					<th align="rigth"><?php echo "".number_format($VAL, 2)." Euros"; ?></th>
 				</tr>
 				<tr>
-					<th align="left">Internal Rate of Return (IRR):</th>
+					<th align="left">Approximate Internal Rate of Return (IRR): </th>
 					<th align="rigth"><?php echo "".number_format(100*$TIR, 2)." %"; ?></th>
 				</tr>
 			<tbody>
