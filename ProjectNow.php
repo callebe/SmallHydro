@@ -205,15 +205,14 @@
 
 				case '3':
 					//Adicionando $ na variável t
-					$Qiaux = $_POST["Qi"];
-					$Qi = str_replace("t", "\$t", $Qiaux);
+					$Qi = str_replace("t", "\$t", $_POST["Qi"]);
 
 					// diretório onde encontra-se o arquivo
 					$filename = "FlowRateFunction.php";
 					// verifica se existe o arquivo
-					while(file_exists($filename)){
+					// while(file_exists($filename)){
 
-					}
+					// }
 					//Adciona um novo texto
 					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
 					//Escrevendo
