@@ -1,4 +1,3 @@
-<!-- Iniciar Seção -->
 <?php
 	session_start(); //esse comando deve estar na primeira linha
 	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
@@ -8,6 +7,7 @@
 <html lang="en">
 
 <head>
+	<link rel="shortcut icon" href="img/favicon.ico"/>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -183,14 +183,8 @@
 
 							// diretório onde encontra-se o arquivo
 							$filename = "FlowRateFunction.php";
-							// verifica se existe o arquivo		
-							// if(file_exists($filename)){		
-							// 	$script = file_get_contents($filename);		
-							// } 
-							// else {		
-							// 	$script = "";		
-							// }
-							//Adciona um novo texto
+							//Aguarda até liberar o arquivo
+							while(file_exists($filename)){}		
 							$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
 							//Escrevendo
 							$file = @fopen($filename, "w+");

@@ -1,4 +1,3 @@
-<!-- Iniciar Seção -->
 <?php
 	session_start(); //esse comando deve estar na primeira linha
 	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
@@ -8,6 +7,7 @@
 <html lang="en">
 	
 <head>
+	<link rel="shortcut icon" href="img/favicon.ico"/>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
