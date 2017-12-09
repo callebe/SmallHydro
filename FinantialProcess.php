@@ -1,4 +1,4 @@
-<form name="AllInputsC" action="Result.php" method="post" id="Entrada" class="form-horizontal">
+<form name="AllInputsC" action="Result.php" method="post" class="form-horizontal">
 	<table style="width:50%" align="center">
 		<tr>
 			<th align="left">Work Hours per Years (Hours/Years): </th>
