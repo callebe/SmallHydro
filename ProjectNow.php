@@ -132,11 +132,22 @@
 
 <!-- Conteúdo -->
 <section id="about">
-	<div class="container text-center">
-		hkhhjhk
-		<img src="img/esquema.png" alt="Esquema" class="img-responsive" />
+	<br><br><br>
+	<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
+		<table style="width:80%" align="center" class="table">
+		<tbody>
+			<tr>
+				<th><img src="img/esquema.png" alt="Esquema" class="img-responsive" /></div></th>
+				<th>Explicação</div></th>
+			</tr>
+		</tbody>
+		</table>
 	</div>
 	<div class="container text-center">
+		
+		<h2> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> </h2>
+		<h2> <br> <br> </h2>
+
 		<a href="#" id="ancora"></a>
 
 		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
