@@ -1,6 +1,6 @@
 <!-- Iniciar Seção -->
 <?php
-	session_start('User'); //esse comando deve estar na primeira linha
+	session_start(); //esse comando deve estar na primeira linha
 	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
 	ob_start(); //ob_start — Ativa o buffer de saída
 ?>
@@ -138,124 +138,77 @@
 		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
 		
  		<?php
- 		
  			if(empty($_POST["Hb"]) & empty($_POST["Qi"]) & empty($_POST["hFun"])){
- 				$Process = 0;
+ 				$data = file_get_contents("InitialForm.php");
+				echo $data;
  			}
  			else{
  				if(empty($_POST["Qi"]) & empty($_POST["hFun"])){
+ 					$_SESSION['Hb'] = $_POST["Hb"];
+					$_SESSION['t'] = $_POST["t"];
+					$_SESSION['pHidrMax'] = $_POST["pHidrMax"];
+					$_SESSION['hCheiaMax'] = $_POST["hCheiaMax"];
+					$_SESSION['ng'] = $_POST["ng"];
+					$_SESSION['nTrafo'] = $_POST["nTrafo"];
+					$_SESSION['pDiv'] = $_POST["pDiv"];
+					$_SESSION['Qn'] = $_POST["Qn"];
+					$_SESSION['Qr'] = $_POST["Qr"];
+					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
+					$_SESSION['TypeQt'] = $_POST["TypeQt"];
  					if($_POST["TypeQt"] == "Discrete"){
- 						$Process = 2;	
+ 						$data = file_get_contents("ProcessQtTableA.php");
+						echo $data;
+						for ($i = 0 ; $i<100/($_SESSION['t'])+1; $i++){
+							echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"text\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 required></th></tr>";
+						}
+						$data = file_get_contents("ProcessQtTableB.php");
+						echo $data;	
  					}
  					else{
- 						$Process = 1;
+ 						$data = file_get_contents("ProcessQtEquation.php");
+						echo $data;
  					}
  				}
  				else{
  					if(empty($_POST["hFun"])){
+ 						//Printa o Processo financial 
+						$data = file_get_contents("FinantialProcess.php");
+						echo $data;
 						if($_SESSION['TypeQt'] == "Discrete"){
-							$Process = 4;	
+							$_SESSION["Qi"] = $_POST["Qi"];
 						}
 						else{
-							$Process = 3;
+							//Adicionando $ na variável t
+							$Qi = str_replace("t", "\$t", $_POST["Qi"]);
+
+							// diretório onde encontra-se o arquivo
+							$filename = "FlowRateFunction.php";
+							// verifica se existe o arquivo		
+							// if(file_exists($filename)){		
+							// 	$script = file_get_contents($filename);		
+							// } 
+							// else {		
+							// 	$script = "";		
+							// }
+							//Adciona um novo texto
+							$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
+							//Escrevendo
+							$file = @fopen($filename, "w+");
+							@fwrite($file, $s);
+							@fclose($file);	
+							
+							//Calcula os Pontos de Qi
+							include 'FlowRateFunction.php';
+							for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
+								$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
+							}
+
+							//Exclui o Arquivo Criado Anteriormente
+							unlink('FlowRateFunction.php');  //Deleta Arquivo
 						}
  					}
  				}
  			}
-
-			switch ($Process) {				
-
-				case '1':
-					$_SESSION['Hb'] = $_POST["Hb"];
-					$_SESSION['t'] = $_POST["t"];
-					$_SESSION['pHidrMax'] = $_POST["pHidrMax"];
-					$_SESSION['hCheiaMax'] = $_POST["hCheiaMax"];
-					$_SESSION['ng'] = $_POST["ng"];
-					$_SESSION['nTrafo'] = $_POST["nTrafo"];
-					$_SESSION['pDiv'] = $_POST["pDiv"];
-					$_SESSION['Qn'] = $_POST["Qn"];
-					$_SESSION['Qr'] = $_POST["Qr"];
-					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
-					$_SESSION['TypeQt'] = $_POST["TypeQt"];
-					$data = file_get_contents("ProcessQtEquation.php");
-					echo $data;
-					break;
-
-				case '2':
-					$_SESSION['Hb'] = $_POST["Hb"];
-					$_SESSION['t'] = $_POST["t"];
-					$_SESSION['pHidrMax'] = $_POST["pHidrMax"];
-					$_SESSION['hCheiaMax'] = $_POST["hCheiaMax"];
-					$_SESSION['ng'] = $_POST["ng"];
-					$_SESSION['nTrafo'] = $_POST["nTrafo"];
-					$_SESSION['pDiv'] = $_POST["pDiv"];
-					$_SESSION['Qn'] = $_POST["Qn"];
-					$_SESSION['Qr'] = $_POST["Qr"];
-					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
-					$_SESSION['TypeQt'] = $_POST["TypeQt"];
-					$data = file_get_contents("ProcessQtTableA.php");
-					echo $data;
-					for ($i = 0 ; $i<100/($_SESSION['t'])+1; $i++){
-						echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"text\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 required></th> 
-					</tr>";
-					}
-					$data = file_get_contents("ProcessQtTableB.php");
-					echo $data;
-					break;
-
-				case '3':
-					//Adicionando $ na variável t
-					$Qi = str_replace("t", "\$t", $_POST["Qi"]);
-
-					// diretório onde encontra-se o arquivo
-					$filename = "FlowRateFunction.php";
-					// verifica se existe o arquivo
-					//while(file_exists($filename))
-
-					//Adciona um novo texto
-					$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
-					//Escrevendo
-					$file = @fopen($filename, "w+");
-					@fwrite($file, $s);
-					@fclose($file);	
-					
-					//Calcula os Pontos de Qi
-					include 'FlowRateFunction.php';
-					for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
-						$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
-					}
-
-					//Exclui o Arquivo Criado Anteriormente
-					unlink('FlowRateFunction.php');  //Deleta Arquivo
-
-					//Printa o Processo financial 
-					$data = file_get_contents("FinantialProcess.php");
-					echo $data;
-					break;
-
-				case '4':
-					//Printa o Processo financial 
-					$_SESSION["Qi"] = $_POST["Qi"];
-					$data = file_get_contents("FinantialProcess.php");
-					echo $data;
-					break;
-
-				default:
-					$_SESSION['Hb'] = "";
-					$_SESSION['t'] = "";
-					$_SESSION['pHidrMax'] = "";
-					$_SESSION['hCheiaMax'] = "";
-					$_SESSION['ng'] = "";
-					$_SESSION['nTrafo'] = "";
-					$_SESSION['pDiv'] = "";
-					$_SESSION['Qn'] = "";
-					$_SESSION['Qr'] = "";
-					$_SESSION['TypeTurbine'] = "";
-					$_SESSION['TypeQt'] = "";
-					$data = file_get_contents("InitialForm.php");
-					echo $data;
-					break;
-			}
 		?>
 		<h2><br> <br> <br></h2>
 
