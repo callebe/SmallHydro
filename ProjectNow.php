@@ -133,6 +133,10 @@
 <!-- Conteúdo -->
 <section id="about">
 	<div class="container text-center">
+		hkhhjhk
+		<img src="img/esquema.png" alt="Esquema" class="img-responsive" />
+	</div>
+	<div class="container text-center">
 		<a href="#" id="ancora"></a>
 
 		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
