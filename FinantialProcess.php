@@ -5,7 +5,7 @@
 			<th align="rigth"><input type="number" class="form-control" name="hFun" id="hFun" placeholder="hFun" min="0" max="5000" step=0.1 required></th> 
 		</tr>
 		<tr>
-			<th align="left">Initial Unit Investiment ($) : </th>
+			<th align="left">Initial Unit Investiment ($/kW) : </th>
 			<th align="rigth"><input type="number" class="form-control"  name="invUni" id="invUni" placeholder="invUni" min="1"  step=1 required></th> 
 		</tr>
 		<tr>
@@ -21,7 +21,7 @@
 			<th align="rigth"><input type="number" name="encManu" id="encManu" class="form-control"  placeholder="encManu" min="0"  step=0.001 required></th> 
 		</tr>
 		<tr>
-			<th align="left">Time Lapse (Years): </th>
+			<th align="left">Life of mini hydro (Years): </th>
 			<th align="rigth"><input type="number" name="anos"  id="anos" class="form-control"  placeholder="anos" min="0" max="50" step=0.001 required></th> 
 		</tr>
 	</table>

@@ -242,7 +242,7 @@
 			<h3><br> <br> <br> Results <br></h3>
 		</div>
 		<br><br><br>
-		<table style="width:40%"  align="center" class="table">
+		<table style="width:50%"  align="center" class="table">
 			<tbody>
 				<tr>
 					<th align="left">Total Year Energy: </th>
@@ -261,11 +261,25 @@
 				</tr>
 				<tr>
 					<th align="left">Net Present Value (NPV):</th>
-					<th align="rigth"><?php echo "".number_format($VAL, 2)." Euros"; ?></th>
+					<th align="rigth"><?php 
+						if ($VAL<0) {
+							echo "".number_format($VAL, 2)." Euros | Nooo! :(";
+						}
+						else{
+							echo "".number_format($VAL, 2)." Euros | It's ok :)";
+						} ?>
+					</th>
 				</tr>
 				<tr>
 					<th align="left">Approximate Internal Rate of Return (IRR): </th>
-					<th align="rigth"><?php echo "".number_format(100*$TIR, 2)." %"; ?></th>
+					<th align="rigth"><?php 
+						if ($TIR<$txAt) {
+							echo "".number_format(100*$TIR, 2)." % | Nooo! :(";
+						}
+						else{
+							echo "".number_format(100*$TIR, 2)." % | It's ok :)";
+						}?>
+					</th>
 				</tr>
 			<tbody>
 		</table>
