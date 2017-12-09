@@ -132,47 +132,24 @@
 
 <!-- Conteúdo -->
 <section id="about">
-	<br><br><br>
 	<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
-		<table style="width:80%" align="center" class="table">
-			<thead> 
-				<tr>
-					<th class="text-center">
-						<h4> Explanation </h4>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>				
-					<th class="tg-yw4l text-center" align="center"> 
-				 		<div align="center">
-				 			<img src="img/esquema.png" alt="Esquema" class="img-responsive" />
-				 		</div>	
-				 	</th> 
-				</tr>
-				<tr>
-					<td class="tg-yw4l text-justify">A schematic of a mini hydropower plant is shown in the figure on the side. Where Upstream is the highest part of the river and Downstream is the lowest, with Gross head being the difference of the height between these two heights and Losses in head is the losses with floods and hydraulic circuit in relation to the gross height. Machine house is where you find the turbine, generator and transformer. For the design of the small hydraulic power station it is necessary to indicate the type of turbine to be used, the efficiency of the generator and transformer and the indication of other electrical losses. This project tool implements the complete method of calc, obtaining nominal power and energy produced annually for the proposed hydraulic utilization. These data are based on the river flow curve.<br><br>
-				    In addition, it is possible to enter initial investment data, the price of the energy to be sold, for an economic analysis of the investment. Taking the VAL as the residual value at the end of the useful life of the mini hydropower plant, and the IRR, which is the internal rate of return, the highest possible value for the discount rate that would lead to the investment unfeasible.<br><br><br></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="container text-center">
-		
-		<h2> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> </h2>
-		<h2> <br> <br> </h2>
-
-		<a href="#" id="ancora"></a>
-
-		<h3><br> <br> <br> Enter the Hydroelectric Resource Data <br><br></h3>
-		
- 		<?php
+		<?php
+			//Se for a primeira etapa do processo
  			if(empty($_POST["Hb"]) & empty($_POST["Qi"]) & empty($_POST["hFun"])){
+ 				//Printa a explicação
+ 				$data = file_get_contents("Explanation.php");
+				echo $data;
+ 				//Printa o formulário
  				$data = file_get_contents("InitialForm.php");
 				echo $data;
  			}
  			else{
+ 				//Se for a segunda etapa do processo
  				if(empty($_POST["Qi"]) & empty($_POST["hFun"])){
+ 					//Printa a explicação
+ 					$data = file_get_contents("Explanation.php");
+					echo $data;
+					//Guarda Variáveis
  					$_SESSION['Hb'] = $_POST["Hb"];
 					$_SESSION['t'] = $_POST["t"];
 					$_SESSION['pHidrMax'] = $_POST["pHidrMax"];
@@ -184,7 +161,9 @@
 					$_SESSION['Qr'] = $_POST["Qr"];
 					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
 					$_SESSION['TypeQt'] = $_POST["TypeQt"];
+					//Se Qt for da forma discreta
  					if($_POST["TypeQt"] == "Discrete"){
+ 						//Printa o formulário do Qt Discreto
  						$data = file_get_contents("ProcessQtTableA.php");
 						echo $data;
 						for ($i = 0 ; $i<100/($_SESSION['t'])+1; $i++){
@@ -193,23 +172,29 @@
 						$data = file_get_contents("ProcessQtTableB.php");
 						echo $data;	
  					}
+ 					//Senão
  					else{
+ 						//Printa o formulário do Qt em forma de equação
  						$data = file_get_contents("ProcessQtEquation.php");
 						echo $data;
  					}
  				}
  				else{
+ 					//Se for a terceira etapa do processo
  					if(empty($_POST["hFun"])){
- 						//Printa o Processo financial 
-						$data = file_get_contents("FinantialProcess.php");
-						echo $data;
+						// Tratamento das Varíáveis recebidas no processo anterior
+						// Se Qt for discreto
 						if($_SESSION['TypeQt'] == "Discrete"){
+							//Associa o valor de Qi
 							$_SESSION["Qi"] = $_POST["Qi"];
+							//Printa o Processo financial 
+							$data = file_get_contents("FinantialProcess.php");
+							echo $data;
 						}
+						// Se Qt for em forma de equação
 						else{
 							//Adicionando $ na variável t
 							$Qi = str_replace("t", "\$t", $_POST["Qi"]);
-
 							// diretório onde encontra-se o arquivo
 							$filename = "FlowRateFunction.php";
 							//Aguarda até liberar o arquivo
@@ -219,13 +204,26 @@
 							$file = @fopen($filename, "w+");
 							@fwrite($file, $s);
 							@fclose($file);	
-							
-							//Calcula os Pontos de Qi
+							//Verifica se há erros na equação
 							include 'FlowRateFunction.php';
-							for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
-								$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
+							FlowRateFunction(0);
+							$erro = error_get_last();
+							if(empty($erro)){
+								//Calcula os Pontos de Qi
+								for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
+									$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
+								}
+								//Printa o Processo financial 
+								$data = file_get_contents("FinantialProcess.php");
+								echo $data;
+							} 
+							else{
+								echo "<script> alert(\"".$erro[message]."\"); </script>";
+								//Printa o formulário do Qt em forma de equação
+		 						$data = file_get_contents("ProcessQtEquation.php");
+								echo $data;
 							}
-
+							
 							//Exclui o Arquivo Criado Anteriormente
 							unlink('FlowRateFunction.php');  //Deleta Arquivo
 						}
@@ -233,8 +231,12 @@
  				}
  			}
 		?>
-		<h2><br> <br> <br></h2>
-
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>	
 	</div>
 </section>
 

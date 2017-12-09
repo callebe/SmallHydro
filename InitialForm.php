@@ -1,5 +1,12 @@
+<h1><a href="#" id="ancora"></a></h1>
+<br>
+<br>
+<br>
+<br>
+<h3><a href="#" id="ancora"></a>Enter the Hydroelectric Resource Data</h3>
+		
 <form name="AllInputs" action="ProjectNow.php" method="post" class="form-horizontal">
-	<table style="width:50%" align="center">
+	<table style="width:60%" align="center">
 		<tr>
 			<th align="left">Gross head (Meters): </th>
 			<th align="rigth"><input class="form-control" type="number" class="form-control" name="Hb" id="Hb" placeholder="Hb" min="0" max="5000" step=0.001 required></th> 
@@ -37,7 +44,7 @@
 			<th align="rigth"><input type="number" name="Qr" id="Qr" class="form-control"  placeholder="Qr" min="0" max="100" step=0.001 required></th> 
 		</tr>
 	</table>
-	<table style="width:50%" align="center">
+	<table style="width:60%" align="center">
 		<tr>
 			<th align="left">Type of Turbine: </th>
 			<th align="rigth" class="col-xs-5"><select class="form-control" name="TypeTurbine">
@@ -50,7 +57,7 @@
 			</th>
 		</tr>
 	</table>
-	<table style="width:50%" align="center">
+	<table style="width:60%" align="center">
 		<tr>
 			<th align="left">The Flow Rate:</th>
 			<th align="rigth" class="col-xs-5"><select class="form-control" name="TypeQt">

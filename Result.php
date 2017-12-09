@@ -263,10 +263,10 @@
 					<th align="left">Net Present Value (NPV):</th>
 					<th align="rigth"><?php 
 						if ($VAL<0) {
-							echo "".number_format($VAL, 2)." Euros | Nooo! :(";
+							echo "".number_format($VAL, 2)." € | Nooo! :(";
 						}
 						else{
-							echo "".number_format($VAL, 2)." Euros | It's ok :)";
+							echo "".number_format($VAL, 2)." € | It's ok :)";
 						} ?>
 					</th>
 				</tr>

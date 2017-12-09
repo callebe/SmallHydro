@@ -1,3 +1,10 @@
+<h1><a href="#" id="ancora"></a></h1>
+<br>
+<br>
+<br>
+<br>
+<h3>Enter the Financial Data</h3>
+
 <form name="AllInputsC" action="Result.php" method="post" class="form-horizontal">
 	<table style="width:50%" align="center">
 		<tr>
