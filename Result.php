@@ -439,7 +439,8 @@
 										} ?>],
 										label: "Available Power",
 										borderColor: "#3e95cd",
-										fill: false
+										fill: false,
+										yAxisID: "y-axis-1",
 									}, { 
 										data: [<?php 
 										for ($i=0; $i<($length); $i++){
@@ -447,7 +448,8 @@
 										} ?>],
 										label: "Used Flow",
 										borderColor: "#8e5ea2",
-										fill: false
+										fill: false,
+										yAxisID: "y-axis-2",
 									}]
 								},
 								options: {
@@ -457,20 +459,33 @@
 										text: 'Available Electric Power'
 									},
 									scales: {
-				                    xAxes: [{
-				                        display: true,
-				                        scaleLabel: {
-				                            display: true,
-				                            labelString: 'Percent of Years (%)'
-				                        }
-				                    }],
-				                    yAxes: [{
-				                        display: true,
-				                        scaleLabel: {
-				                            display: true,
-				                            labelString: 'Power (kW)'
-				                        }
-				                    }]
+					                    xAxes: [{
+					                        display: true,
+					                        scaleLabel: {
+					                            display: true,
+					                            labelString: 'Percent of Years (%)'
+					                        }
+					                    }],
+					                    yAxes: [{
+					                    	type: "linear",
+					                        display: true,
+					                        position: "left",
+					                        id: "y-axis-1",
+					                        scaleLabel: {
+					                            display: true,
+					                            labelString: 'Power (kW)'
+					                        }
+					                    },{
+					                    	gridLines: {drawOnChartArea: false,},
+					                    	type: "linear",
+					                    	display: true,
+					                    	position: "right",
+					                    	id: "y-axis-2",
+					                    	scaleLabel: {
+					                    		display: true,
+					                    		labelString: 'm³/s',
+					                    	}
+					                    }]
 				                	}
 								}
 							});
