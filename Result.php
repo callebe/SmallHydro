@@ -158,29 +158,49 @@
 	$hHidr = array($length);
 	$hCheia = array($length);
 	$P = array($length);
+	$PDG = array($length); // DOIS GRUPOS
 	$Qdisponivel = array($length);
 	$Qusado = array($length);
 	$Etotal = 0;
+	$EtotalDG = 0; // DOIS GRUPOS
+	$QusadoDG = array($length); // DOIS GRUPOS
+	$hHidrDG = array($length); // DOIS GRUPOS
+	$QrevisedDG = array($length); // DOIS GRUPOS
+	$hCheiaDG = array($length); // DOIS GRUPOS
 
 	//Cálulo da Potência, Caudais e Energia
 	for ($i=0; $i<($length); $i++){
 		$Qdisponivel[$i] =  max($Qi[$i]-$Qr, 0);
 		$Qusado[$i] =  min($Qdisponivel[$i], $Qn);
+		$QusadoDG[$i] =  min($Qdisponivel[$i], $Qn/2); // DOIS GRUPOS
 		$hHidr[$i] = $Hb*$pHidrMax*pow($Qusado[$i]/$Qn,2);
+		$hHidrDG[$i] = $Hb*$pHidrMax*pow($QusadoDG[$i]/($Qn/2),2); // DOIS GRUPOS
 		$Qrevised = max($Qi[$i]-$Qn,0);
+		$QrevisedDG = max($Qi[$i]-$Qn/2,0); // DOIS GRUPOS
 		$hCheia[$i] = $hCheiaMax*pow($Qrevised/($Qi[0]-$Qn),2);
+		$hCheiaDG[$i] = $hCheiaMax*pow($QrevisedDG/($Qi[0]-$Qn/2),2); // DOIS GRUPOS
 		if (($_SESSION['TypeTurbine']) =='Francis'){
 			$beta = 1.1173*pow($Hb-$hHidr[$i],0.025);
+			$betaDG = 1.1173*pow($Hb-$hHidrDG[$i],0.025); // DOIS GRUPOS
   			$qui = 3.94-11.7*pow($Hb-$hHidr[$i],-0.5);
+  			$quiDG = 3.94-11.7*pow($Hb-$hHidrDG[$i],-0.5); // DOIS GRUPOS
+        }
+        else{
+        	$betaDG = $beta;
+        	$quiDG = $qui;
         }
 		$nt = max((1-$alpha*pow(abs(1-$beta*$Qusado[$i]/$Qn),$qui))*$delta,0);
+		$ntDG = max((1-$alpha*pow(abs(1-$betaDG*$QusadoDG[$i]/($Qn/2)),$quiDG))*$delta,0); // DOIS GRUPOS
 		$P[$i] = max((9810/1000)*$Qusado[$i]*($Hb-($hHidr[$i]+$hCheia[$i]))*$nt*$ng*$nTrafo*(1-$pDiv),0);
+		$PDG[$i] = max((9810/1000)*$QusadoDG[$i]*($Hb-($hHidrDG[$i]+$hCheiaDG[$i]))*$nt*$ng*$nTrafo*(1-$pDiv),0); // DOIS GRUPOS
 		if($i > 0){
 			$Etotal = $Etotal + ($P[$i-1]+$P[$i])/2;
+			$EtotalDG = $EtotalDG + ($PDG[$i-1]+$PDG[$i])/2; // DOIS GRUPOS
 		}		
 		//echo "Qi = ".$Qi[$i]." Qdisponivel = ".$Qdisponivel[$i]." Qusado = ".$Qusado[$i]." Qn = ".$Qn." hHidr = ".$hHidr[$i]." hCheia = ".$hCheia[$i]." P".$P[$i]." E".$Etotal." <br>";
 	}
 	$Etotal = $Etotal*0.05*8760*(1-4/100);
+	$EtotalDG = $EtotalDG*0.05*8760*(1-4/100); // DOIS GRUPOS
 	
 	//Cálculo da potência nominal
 	if (($_SESSION['TypeTurbine']) =='Francis'){
@@ -190,6 +210,7 @@
 	$ntN = max((1-$alpha*pow(abs(1-$beta),$qui))*$delta,0);
 	$hHidrN = $Hb*$pHidrMax;
 	$Pn = 9810/1000*$Qn*($Hb-$hHidrN)*$ntN*$ng*$nTrafo*(1-$pDiv);
+	$PnDG = 9810/1000*($Qn/2)*($Hb-$hHidrN)*$ntN*$ng*$nTrafo*(1-$pDiv); // DOIS GRUPOS
 
 	// Análise econômica
 	$hFun = $_POST["hFun"]; //Horas de funcionamento AQUI
@@ -200,9 +221,13 @@
 	$anos = $_POST["anos"]; //Anos a considerar AQUI
 
 	$invIni = $Pn*$invUni; //Investimento inical
+	$invIniDG = $PnDG*2*$invUni; // DOIS GRUPOS
 	$receiAnu = $hFun*$Pn*$venEner/1000; //Receita anual
-	$despInvAnu = $Pn*$invUni*$encManu; //Manunenção anual
+	$receiAnuDG = $hFun*$Pn*2*$venEner/1000; // DOIS GRUPOS
+	$despInvAnu = $invIni*$encManu; //Manunenção anual
+	$despInvAnuDG = $invIniDG*$encManu; // DOIS GRUPOS
 	$fluxoMo = $receiAnu-$despInvAnu; //fluxo monetário
+	$fluxoMoDG = $receiAnuDG-$despInvAnuDG; // DOIS GRUPOS
 
 	$cashFlow = array($anos);
 	$cashFlow[0] = -$invIni;
@@ -210,17 +235,38 @@
 	$cashFlowAtu[0] = -$invIni;
 	$cashFlowAtAcu = array($anos);
 	$cashFlowAtAcu[0] = -$invIni;
+
+	// DOIS GRUPOS
+	$cashFlowDG = array($anos);
+	$cashFlowDG[0] = -$invIni;
+	$cashFlowAtuDG = array($anos);
+	$cashFlowAtuDG[0] = -$invIniDG;
+	$cashFlowAtAcuDG = array($anos);
+	$cashFlowAtAcuDG[0] = -$invIniDG;
 	
 	for($c = 1; $c <= $anos; $c++){
 		$cashFlow[$c] = $fluxoMo;
 	    $cashFlowAtu[$c] = $cashFlow[$c]/(pow(1+$txAt,$c));
 	    $cashFlowAtAcu[$c] = $cashFlowAtAcu[$c-1]+$cashFlowAtu[$c];
 	}
+
+	// DOIS GRUPOS
+	for($c = 1; $c <= $anos; $c++){
+		$cashFlowDG[$c] = $fluxoMoDG;
+	    $cashFlowAtuDG[$c] = $cashFlowDG[$c]/(pow(1+$txAt,$c));
+	    $cashFlowAtAcuDG[$c] = $cashFlowAtAcuDG[$c-1]+$cashFlowAtuDG[$c];
+	}
 	
 	//VAL
 	$VAL = 0;
 	for($c = 0; $c <= $anos; $c++){
 		$VAL += $cashFlowAtu[$c];	
+	}
+
+	//VAL // DOIS GRUPOS
+	$VALDG = 0;
+	for($c = 0; $c <= $anos; $c++){
+		$VALDG += $cashFlowAtuDG[$c];	
 	}
 
 	//TIR
@@ -233,13 +279,24 @@
 	   $erro = $TIR - $TIRAnt;
 	   $TIRAnt = $TIR;
 	}
+
+	//TIR // DOIS GRUPOS
+	$TIRAntDG =(($fluxoMoDG)/(2*$invIni))*((pow(1+$txAt,$anos-1))/pow(1+$txAt,$anos));
+	$VALCalDG = $VALDG;
+	$erro = 1;
+	
+	while (abs($erro) > 0.00001){
+	   $TIRDG = (($fluxoMoDG)/(2*$invIni))*((pow(1+$TIRAntDG,$anos-1))/pow(1+$TIRAntDG,$anos));
+	   $erro = $TIRDG - $TIRAntDG;
+	   $TIRAntDG = $TIRDG;
+	}
 ?>
 
 <!-- Seção do Conteúdo -->
 <section id="about">
 	<div class="container text-center">
 		<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
-			<h3><br> <br> <br> Results <br></h3>
+			<h3><br> <br> <br> Results for one turbine<br></h3>
 		</div>
 		<br><br><br>
 		<table style="width:50%"  align="center" class="table">
@@ -251,7 +308,7 @@
 							echo "".number_format($Etotal, 2)." kWh";
 						}
 						else{
-							echo "".number_format($Etotal/1000, 2)." MWh";
+							echo " ".number_format($Etotal/1000, 2)." MWh";
 						} ?>		
 					</th>
 				</tr>
@@ -283,6 +340,53 @@
 				</tr>
 			<tbody>
 		</table>
+
+		<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
+			<h3><br> <br> <br> Results for two turbines <br></h3>
+		</div>
+		<br><br><br>
+		<table style="width:50%"  align="center" class="table">
+			<tbody>
+				<tr>
+					<th align="left">Total Year Energy: </th>
+					<th align="rigth"><?php 
+						if($Etotal<1000){
+							echo "".number_format(2*$EtotalDG, 2)." kWh";
+						}
+						else{
+							echo " ".number_format(2*$EtotalDG/1000, 2)." MWh";
+						} ?>		
+					</th>
+				</tr>
+				<tr>
+					<th align="left">Nominal Power of Each Turbine:</th>
+					<th align="rigth"><?php echo "".number_format($PnDG, 2)." kWh"; ?></th>
+				</tr>
+				<tr>
+					<th align="left">Net Present Value (NPV):</th>
+					<th align="rigth"><?php 
+						if ($VAL<0) {
+							echo "".number_format($VALDG, 2)." € | Nooo! :(";
+						}
+						else{
+							echo "".number_format($VALDG, 2)." € | It's ok :)";
+						} ?>
+					</th>
+				</tr>
+				<tr>
+					<th align="left">Approximate Internal Rate of Return (IRR): </th>
+					<th align="rigth"><?php 
+						if ($TIR<$txAt) {
+							echo "".number_format(100*$TIRDG, 2)." % | Nooo! :(";
+						}
+						else{
+							echo "".number_format(100*$TIRDG, 2)." % | It's ok :)";
+						}?>
+					</th>
+				</tr>
+			<tbody>
+		</table>
+
 		<br><br><br>
 		<h3><a href="#" id="ancora"></a><br><br> <br> Graphics </h3>
 		<br>
@@ -323,6 +427,14 @@
 										} ?>],
 										label: "Used Flow Rate",
 										borderColor: "#3cba9f",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$QusadoDG[$i].", ";
+										} ?>],
+										label: "Used Flow Rate for 2 turbines",
+										borderColor: "#ff0080",
 										fill: false
 									}]
 								},
@@ -381,10 +493,26 @@
 									}, { 
 										data: [<?php 
 										for ($i=0; $i<($length); $i++){
+											echo "".$hHidrDG[$i].", ";
+										} ?>],
+										label: "Hydraulic Losses for 2 turbines",
+										borderColor: "#ff0080",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
 											echo "".$hCheia[$i].", ";
 										} ?>],
 										label: "Full Flow Losses",
 										borderColor: "#8e5ea2",
+										fill: false
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$hCheiaDG[$i].", ";
+										} ?>],
+										label: "Full Flow Losses for 2 turbines",
+										borderColor: "#B45F04",
 										fill: false
 									}]
 								},
@@ -444,10 +572,28 @@
 									}, { 
 										data: [<?php 
 										for ($i=0; $i<($length); $i++){
+											echo "".$PDG[$i].", ";
+										} ?>],
+										label: "Available Power for 2 turbines",
+										borderColor: "#ff0080",
+										fill: false,
+										yAxisID: "y-axis-1",
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
 											echo "".$Qusado[$i].", ";
 										} ?>],
 										label: "Used Flow",
 										borderColor: "#8e5ea2",
+										fill: false,
+										yAxisID: "y-axis-2",
+									}, { 
+										data: [<?php 
+										for ($i=0; $i<($length); $i++){
+											echo "".$QusadoDG[$i].", ";
+										} ?>],
+										label: "Used Flow for 2 turbines",
+										borderColor: "#B45F04",
 										fill: false,
 										yAxisID: "y-axis-2",
 									}]
