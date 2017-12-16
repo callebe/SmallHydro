@@ -13,7 +13,7 @@
 		</tr>
 		<tr>
 			<th align="left">Time Interval (% of Years) : </th>
-			<th align="rigth"><input type="number" class="form-control" class="form-control" name="t" id="t" placeholder="t" min="1" max="365" step=0.001 required></th> 
+			<th align="rigth"><input type="number" class="form-control" class="form-control" name="t" id="t" placeholder="t" min="0.001" max="365" step=0.001 required></th> 
 		</tr>
 		<tr>
 			<th align="left">The Maximum Load Losses Value (%): </th>
@@ -42,6 +42,10 @@
 		<tr>
 			<th align="left">Compensation Flow (meters): </th>
 			<th align="rigth"><input type="number" name="Qr" id="Qr" class="form-control"  placeholder="Qr" min="0" max="100" step=0.001 required></th> 
+		</tr>
+		<tr>
+			<th align="left">Loss of Unavailability (%): </th>
+			<th align="rigth"><input type="number" name="pInd" id="pInd" class="form-control"  placeholder="pInd" min="0" max="100" step=0.001 required></th> 
 		</tr>
 	</table>
 	<table style="width:60%" align="center">

@@ -33,6 +33,7 @@
 			document.getElementById('pDiv').value = "2";
 			document.getElementById('Qn').value = "11.25";
 			document.getElementById('Qr').value = "1";
+			document.getElementById('pInd').value = "4";
 		}
 	</script>
 	<script>
@@ -90,7 +91,7 @@
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
 			<i class="fa fa-bars"></i>
 			</button>
-			<a class="navbar-brand page-scroll" href="index.html">
+			<a class="navbar-brand page-scroll" href="index.php">
 			Project Your Small Hydro </a>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -161,6 +162,7 @@
 					$_SESSION['Qr'] = $_POST["Qr"];
 					$_SESSION['TypeTurbine'] = $_POST["TypeTurbine"];
 					$_SESSION['TypeQt'] = $_POST["TypeQt"];
+					$_SESSION['pInd'] = $_POST["pInd"];
 					//Se Qt for da forma discreta
  					if($_POST["TypeQt"] == "Discrete"){
  						//Printa o formulário do Qt Discreto

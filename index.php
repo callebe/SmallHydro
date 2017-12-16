@@ -28,7 +28,7 @@
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
 			<i class="fa fa-bars"></i>
 			</button>
-			<a class="navbar-brand page-scroll" href="index.html">
+			<a class="navbar-brand page-scroll" href="index.php">
 			Project Your Small Hydro </a>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->

@@ -40,7 +40,7 @@
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
 			<i class="fa fa-bars"></i>
 			</button>
-			<a class="navbar-brand page-scroll" href="index.html">
+			<a class="navbar-brand page-scroll" href="index.php">
 			Project Your Small Hydro </a>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -98,6 +98,7 @@
 	$Qn = ($_SESSION['Qn']);
 	$Qr = ($_SESSION['Qr']);
 	$Qi = ($_SESSION["Qi"]);
+	$pInd = ($_SESSION["pInd"])/100;
 	$length = floor(100/$_SESSION["t"])+1;
 	$timePercent = array($length);
 	$time = array($length);
@@ -129,7 +130,7 @@
 		
 		case 'Francis':
 			$alpha = 1.25;
-			$beta = 0.919; 			
+			$delta = 0.919; 			
 			break;
 
 		case 'Pelton1':
@@ -179,7 +180,7 @@
 		$QrevisedDG = max($Qi[$i]-$Qn/2,0); // DOIS GRUPOS
 		$hCheia[$i] = $hCheiaMax*pow($Qrevised/($Qi[0]-$Qn),2);
 		$hCheiaDG[$i] = $hCheiaMax*pow($QrevisedDG/($Qi[0]-$Qn/2),2); // DOIS GRUPOS
-		if (($_SESSION['TypeTurbine']) =='Francis'){
+		if (($_SESSION['TypeTurbine']) == 'Francis'){
 			$beta = 1.1173*pow($Hb-$hHidr[$i],0.025);
 			$betaDG = 1.1173*pow($Hb-$hHidrDG[$i],0.025); // DOIS GRUPOS
   			$qui = 3.94-11.7*pow($Hb-$hHidr[$i],-0.5);
@@ -199,13 +200,13 @@
 		}		
 		//echo "Qi = ".$Qi[$i]." Qdisponivel = ".$Qdisponivel[$i]." Qusado = ".$Qusado[$i]." Qn = ".$Qn." hHidr = ".$hHidr[$i]." hCheia = ".$hCheia[$i]." P".$P[$i]." E".$Etotal." <br>";
 	}
-	$Etotal = $Etotal*0.05*8760*(1-4/100);
-	$EtotalDG = $EtotalDG*0.05*8760*(1-4/100); // DOIS GRUPOS
+	$Etotal = $Etotal*0.05*8760*(1-$pInd);
+	$EtotalDG = $EtotalDG*0.05*8760*(1-$pInd); // DOIS GRUPOS
 	
 	//Cálculo da potência nominal
-	if (($_SESSION['TypeTurbine']) =='Francis'){
-	 	$beta = 1.1173*pow($Hb*(1-$pHidrMax),0.025);
- 		$qui = 3.94-11.7*pow($Hb*(1-$pHidrMax),-0.5);
+	if (($_SESSION['TypeTurbine']) == 'Francis'){
+	 	$beta = 1.1173*pow($Hb*(1-$pHidrMax),0.025); //1,1823
+ 		$qui = 3.94-11.7*pow($Hb*(1-$pHidrMax),-0.5); //0,1638
     }
 	$ntN = max((1-$alpha*pow(abs(1-$beta),$qui))*$delta,0);
 	$hHidrN = $Hb*$pHidrMax;
@@ -220,7 +221,7 @@
 	$encManu = $_POST["encManu"]/100; //Encargos com manutenção AQUI 
 	$anos = $_POST["anos"]; //Anos a considerar AQUI
 
-	$invIni = $Pn*$invUni; //Investimento inical
+	$invIni = max($Pn*$invUni,0.0001); //Investimento inical
 	$invIniDG = $PnDG*2*$invUni; // DOIS GRUPOS
 	$receiAnu = $hFun*$Pn*$venEner/1000; //Receita anual
 	$receiAnuDG = $hFun*$Pn*2*$venEner/1000; // DOIS GRUPOS
