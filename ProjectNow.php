@@ -196,7 +196,9 @@
 						// Se Qt for em forma de equação
 						else{
 							//Adicionando $ na variável t
-							$Qi = str_replace("t", "\$t", $_POST["Qi"]);
+							$QiAux = str_replace("t", "\$t", $_POST["Qi"]);
+							$QiAux1 = str_replace("euler", "M_E", $QiAux);
+							$Qi = str_replace("pi", "M_PI", $QiAux1);
 							// diretório onde encontra-se o arquivo
 							$filename = "FlowRateFunction.php";
 							//Aguarda até liberar o arquivo
@@ -208,11 +210,12 @@
 							@fclose($file);	
 							//Verifica se há erros na equação
 							include 'FlowRateFunction.php';
-							FlowRateFunction(0);
+							FlowRateFunction(1);
 							$erro = error_get_last();
 							if(empty($erro)){
 								//Calcula os Pontos de Qi
-								for ($i = 0 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
+								$_SESSION['Qi'][0]  = FlowRateFunction(($_SESSION["t"])*365*(0.01)/100);
+								for ($i = 1 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
 									$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
 								}
 								//Printa o Processo financial 
