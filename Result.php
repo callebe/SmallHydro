@@ -214,22 +214,24 @@
 	$PnDG = 9810/1000*($Qn/2)*($Hb-$hHidrN)*$ntN*$ng*$nTrafo*(1-$pDiv); // DOIS GRUPOS
 
 	// Análise econômica
-	$hFun = $_POST["hFun"]; //Horas de funcionamento AQUI
-	$invUni = $_POST["invUni"]; //Investimento unitário ($/MW) AQUI
+	//$hFun = $_POST["hFun"]; //Horas de funcionamento AQUI
+	$invUni = $_POST["invUni"]; //Investimento unitário ($/kW) AQUI
 	$txAt = $_POST["txAt"]/100; //Taxa de atualização AQUI
 	$venEner = $_POST["venEner"]; //Venda de energia em $/MWh AQUI
 	$encManu = $_POST["encManu"]/100; //Encargos com manutenção AQUI 
 	$anos = $_POST["anos"]; //Anos a considerar AQUI
 
 	$invIni = max($Pn*$invUni,0.0001); //Investimento inical
-	$invIniDG = $PnDG*2*$invUni; // DOIS GRUPOS
-	$receiAnu = $hFun*$Pn*$venEner/1000; //Receita anual
-	$receiAnuDG = $hFun*$Pn*2*$venEner/1000; // DOIS GRUPOS
+	$invIniDG = max($PnDG*2*$invUni,0.0001); // DOIS GRUPOS
+	//$receiAnu = $hFun*$Pn*$venEner/1000; //Receita anual
+	$receiAnu = $Etotal*$venEner/1000; //Receita anual
+	//$receiAnuDG = $hFun*$Pn*2*$venEner/1000; // DOIS GRUPOS
+	$receiAnuDG = $EtotalDG*$venEner/1000; // DOIS GRUPOS
 	$despInvAnu = $invIni*$encManu; //Manunenção anual
 	$despInvAnuDG = $invIniDG*$encManu; // DOIS GRUPOS
 	$fluxoMo = $receiAnu-$despInvAnu; //fluxo monetário
 	$fluxoMoDG = $receiAnuDG-$despInvAnuDG; // DOIS GRUPOS
-
+	
 	$cashFlow = array($anos);
 	$cashFlow[0] = -$invIni;
 	$cashFlowAtu = array($anos);
@@ -351,7 +353,7 @@
 				<tr>
 					<th align="left">Total Year Energy: </th>
 					<th align="rigth"><?php 
-						if($Etotal<1000){
+						if($EtotalDG<1000){
 							echo "".number_format(2*$EtotalDG, 2)." kWh";
 						}
 						else{
@@ -366,7 +368,7 @@
 				<tr>
 					<th align="left">Net Present Value (NPV):</th>
 					<th align="rigth"><?php 
-						if ($VAL<0) {
+						if ($VALDG<0) {
 							echo "".number_format($VALDG, 2)." € | Nooo! :(";
 						}
 						else{
@@ -377,7 +379,7 @@
 				<tr>
 					<th align="left">Approximate Internal Rate of Return (IRR): </th>
 					<th align="rigth"><?php 
-						if ($TIR<$txAt) {
+						if ($TIRDG<$txAt) {
 							echo "".number_format(100*$TIRDG, 2)." % | Nooo! :(";
 						}
 						else{

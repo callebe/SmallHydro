@@ -7,10 +7,10 @@
 
 <form name="AllInputsC" action="Result.php" method="post" class="form-horizontal">
 	<table style="width:50%" align="center">
-		<tr>
+		<!-- <tr>
 			<th align="left">Work Hours per Years (Hours/Years): </th>
 			<th align="rigth"><input type="number" class="form-control" name="hFun" id="hFun" placeholder="hFun" min="0" max="5000" step=0.1 required></th> 
-		</tr>
+		</tr> -->
 		<tr>
 			<th align="left">Initial Unit Investiment ($/kW) : </th>
 			<th align="rigth"><input type="number" class="form-control"  name="invUni" id="invUni" placeholder="invUni" min="1"  step=1 required></th> 

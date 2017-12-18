@@ -68,7 +68,7 @@
 	</script>
 	<script>
 		function myFunctionC(){
-			document.getElementById('hFun').value = "2500";
+			//document.getElementById('hFun').value = "2500";
 			document.getElementById('invUni').value = "1200";
 			document.getElementById('txAt').value = "7";
 			document.getElementById('venEner').value = "75";
