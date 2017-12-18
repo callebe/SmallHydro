@@ -2,6 +2,10 @@
 	session_start(); //esse comando deve estar na primeira linha
 	//você também poderá ativar o buffer usando o comando ob_start que evita alguns erros
 	ob_start(); //ob_start — Ativa o buffer de saída
+	//Se o cliente acessar essa pagina sem preencher a anterior
+	if(empty($_POST["invUni"])){
+		header('Location:ProjectNow.php');  
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -299,7 +303,7 @@
 <section id="about">
 	<div class="container text-center">
 		<div class="container text-center col-lg-10 col-lg-offset-1 col-md-13 col-md-offset-5 col-md-6">
-			<h3><br> <br> <br> Results for one turbine<br></h3>
+			<h3><br> <br> <br> Results for one turbine <br></h3>
 		</div>
 		<br><br><br>
 		<table style="width:50%"  align="center" class="table">

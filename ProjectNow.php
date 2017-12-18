@@ -200,7 +200,7 @@
 							// diretório onde encontra-se o arquivo
 							$filename = "FlowRateFunction.php";
 							//Aguarda até liberar o arquivo
-							while(file_exists($filename)){}		
+							//while(file_exists($filename)){}		
 							$s = "<?php \n function FlowRateFunction(\$t) {\n \$R = ".$Qi."; \n return \$R; }\n ?>";
 							//Escrevendo
 							$file = @fopen($filename, "w+");
@@ -225,7 +225,6 @@
 		 						$data = file_get_contents("ProcessQtEquation.php");
 								echo $data;
 							}
-							
 							//Exclui o Arquivo Criado Anteriormente
 							unlink('FlowRateFunction.php');  //Deleta Arquivo
 						}
