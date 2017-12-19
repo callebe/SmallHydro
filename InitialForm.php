@@ -65,7 +65,7 @@
 		<tr>
 			<th align="left">The Flow Rate:</th>
 			<th align="rigth" class="col-xs-5"><select class="form-control" name="TypeQt">
-					<option value="Function">Discribe by C Function</option>
+					<option value="Function">Discribe by Functions</option>
 					<option value="Discrete">In Discrete Terms</option>
 				</select>
 			</th>

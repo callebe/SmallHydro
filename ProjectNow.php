@@ -169,7 +169,7 @@
  						$data = file_get_contents("ProcessQtTableA.php");
 						echo $data;
 						for ($i = 0 ; $i<100/($_SESSION['t'])+1; $i++){
-							echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"text\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 required></th></tr>";
+							echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"number\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 min=\"0\" max=\"1000000\" step=0.001required></th></tr>";
 						}
 						$data = file_get_contents("ProcessQtTableB.php");
 						echo $data;	
@@ -216,7 +216,11 @@
 								//Calcula os Pontos de Qi
 								$_SESSION['Qi'][0]  = FlowRateFunction(($_SESSION["t"])*365*(0.01)/100);
 								for ($i = 1 ; $i<(floor(100/$_SESSION["t"])+1); $i++){
-									$_SESSION['Qi'][$i] = FlowRateFunction(($_SESSION["t"])*365*$i/100);
+									$aux = FlowRateFunction(($_SESSION["t"])*365*$i/100);
+									if($aux == INF){
+										$aux = 1000000;
+									}
+									$_SESSION['Qi'][$i] = $aux; 
 								}
 								//Printa o Processo financial 
 								$data = file_get_contents("FinantialProcess.php");
