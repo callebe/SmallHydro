@@ -321,7 +321,7 @@
 				</tr>
 				<tr>
 					<th align="left">Nominal Power:</th>
-					<th align="rigth"><?php echo "".number_format($Pn, 2)." kWh"; ?></th>
+					<th align="rigth"><?php echo "".number_format($Pn, 2)." kW"; ?></th>
 				</tr>
 				<tr>
 					<th align="left">Net Present Value (NPV):</th>
@@ -367,7 +367,7 @@
 				</tr>
 				<tr>
 					<th align="left">Nominal Power of Each Turbine:</th>
-					<th align="rigth"><?php echo "".number_format($PnDG, 2)." kWh"; ?></th>
+					<th align="rigth"><?php echo "".number_format($PnDG, 2)." kW"; ?></th>
 				</tr>
 				<tr>
 					<th align="left">Net Present Value (NPV):</th>
