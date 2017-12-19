@@ -12,7 +12,7 @@
 			<th align="rigth"><input type="number" class="form-control" name="hFun" id="hFun" placeholder="hFun" min="0" max="5000" step=0.1 required></th> 
 		</tr> -->
 		<tr>
-			<th align="left">Initial Unit Investiment ($/kW) : </th>
+			<th align="left">Initial Unit Investiment (€/kW) : </th>
 			<th align="rigth"><input type="number" class="form-control"  name="invUni" id="invUni" placeholder="invUni" min="1"  step=1 required></th> 
 		</tr>
 		<tr>
@@ -20,7 +20,7 @@
 			<th align="rigth"><input type="number" class="form-control"  name="txAt" id="txAt" placeholder="txAt" min="0" max="100" step=0.001 required></th> 
 		</tr>
 		<tr>
-			<th align="left">MW Price ($/MWh): </th>
+			<th align="left">MW Price (€/MWh): </th>
 			<th align="right"><input type="number" class="form-control"  name="venEner" id="venEner" placeholder="venEner" min="0" step=0.001 required></th> 
 		</tr>
 		<tr>
