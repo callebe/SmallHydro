@@ -22,7 +22,7 @@
 <br>
 <br>
 <br>
-<h6>Use these defult functions for express math usual functions</h6>
+<h6>Use these default functions for express math functions</h6>
 <table style="width:30%"  align="center" class="table">
 	<tbody>
 		<tr>

@@ -169,7 +169,7 @@
  						$data = file_get_contents("ProcessQtTableA.php");
 						echo $data;
 						for ($i = 0 ; $i<100/($_SESSION['t'])+1; $i++){
-							echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"number\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 min=\"0\" max=\"1000000\" step=0.001required></th></tr>";
+							echo "<tr><th align=\"left\">The Flow Rate In t= ".$i*($_SESSION['t'])."%: </th><th align=\"rigth\"><input type=\"number\" class=\"form-control\" name=\"Qi[$i]\" id=\"Qi[$i]\" placeholder=\"Q($i)\" size=10 min=\"0\" max=\"1000000\" step=0.001 required></th></tr>";
 						}
 						$data = file_get_contents("ProcessQtTableB.php");
 						echo $data;	
